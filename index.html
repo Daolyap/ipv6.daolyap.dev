@@ -12,19 +12,21 @@
         }
 
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --accent-color: #f093fb;
+            --primary-color: #4a5568;
+            --secondary-color: #2d3748;
+            --accent-color: #718096;
             --text-color: #2d3748;
             --light-text: #4a5568;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.3);
+            --bg-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-gradient);
+            background: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
             padding: 20px;
@@ -40,8 +42,8 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -56,11 +58,11 @@
         /* Glassmorphism styles */
         .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-radius: 20px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            box-shadow: 0 8px 32px 0 var(--shadow-medium);
         }
 
         /* Header */
@@ -71,14 +73,14 @@
         }
 
         header h1 {
-            color: white;
+            color: var(--text-color);
             font-size: 3em;
             margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
         }
 
         header p {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--light-text);
             font-size: 1.2em;
         }
 
@@ -98,33 +100,36 @@
             flex: 1;
             padding: 15px 20px;
             border: none;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
             font-size: 16px;
             outline: none;
             transition: all 0.3s;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .search-box input:focus {
             background: white;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 16px var(--shadow-medium);
         }
 
         .btn {
             padding: 15px 30px;
             border: none;
-            border-radius: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            background: var(--primary-color);
             color: white;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 16px var(--shadow-medium);
+            background: var(--secondary-color);
         }
 
         .btn:active {
@@ -144,21 +149,25 @@
         .tab-btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-color);
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 2px 6px var(--shadow-light);
         }
 
         .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-medium);
         }
 
         .tab-btn.active {
             background: white;
             color: var(--primary-color);
+            box-shadow: 0 4px 16px var(--shadow-medium);
         }
 
         /* Content Sections */
@@ -173,27 +182,29 @@
         }
 
         .content-section h2 {
-            color: white;
+            color: var(--text-color);
             font-size: 2em;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
         }
 
         .content-section h3 {
-            color: rgba(255, 255, 255, 0.95);
+            color: var(--text-color);
             font-size: 1.5em;
             margin: 25px 0 15px 0;
+            font-weight: 600;
         }
 
         .content-section h4 {
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-color);
             font-size: 1.2em;
             margin: 20px 0 10px 0;
+            font-weight: 600;
         }
 
         .content-section p,
         .content-section li {
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--light-text);
             line-height: 1.8;
             margin-bottom: 12px;
         }
@@ -206,11 +217,12 @@
 
         /* Info Boxes */
         .info-box {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.6);
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 12px;
             margin: 20px 0;
             border-left: 4px solid var(--accent-color);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .info-box.success {
@@ -231,9 +243,9 @@
 
         /* Code Blocks */
         .code-block {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(45, 55, 72, 0.95);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin: 15px 0;
             font-family: 'Courier New', monospace;
             color: #a8e6cf;
@@ -241,7 +253,7 @@
         }
 
         .code-block code {
-            color: #a8e6cf;
+            color: #68d391;
         }
 
         /* Tables */
@@ -249,23 +261,24 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         th {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(74, 85, 104, 0.1);
             padding: 15px;
             text-align: left;
-            color: white;
+            color: var(--text-color);
             font-weight: 600;
         }
 
         td {
             padding: 12px 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.85);
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            color: var(--light-text);
         }
 
         tr:hover {
@@ -274,10 +287,11 @@
 
         /* Interactive Tools */
         .tool-container {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.5);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 12px;
             margin: 25px 0;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .tool-container h3 {
@@ -290,7 +304,7 @@
 
         .input-group label {
             display: block;
-            color: white;
+            color: var(--text-color);
             margin-bottom: 8px;
             font-weight: 600;
         }
@@ -299,34 +313,37 @@
         .input-group select {
             width: 100%;
             padding: 12px;
-            border: none;
+            border: 1px solid rgba(226, 232, 240, 0.6);
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             font-size: 16px;
+            color: var(--text-color);
         }
 
         .result-box {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.8);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-top: 20px;
-            color: white;
+            color: var(--text-color);
             min-height: 60px;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         /* Example Cards */
         .example-card {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.6);
             padding: 20px;
-            border-radius: 15px;
+            border-radius: 12px;
             margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .example-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 16px var(--shadow-medium);
         }
 
         .example-card h4 {
@@ -436,7 +453,7 @@
     <div class="container">
         <!-- Header -->
         <header class="glass">
-            <h1>🌐 IPv6 Cheatsheet</h1>
+            <h1>IPv6 Cheatsheet</h1>
             <p>Your Complete Educational Guide from Beginner to Professional</p>
         </header>
 
@@ -445,7 +462,7 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search for IPv6 topics, commands, or concepts...">
                 <button class="btn" onclick="performSearch()">Search</button>
-                <button class="btn" onclick="downloadMarkdown()">📥 Download</button>
+                <button class="btn" onclick="downloadMarkdown()">Download</button>
             </div>
         </div>
 
@@ -464,7 +481,7 @@
 
         <!-- Overview Section -->
         <section id="overview" class="content-section glass active">
-            <h2>📚 IPv6 Overview</h2>
+            <h2>IPv6 Overview</h2>
             
             <div class="info-box info">
                 <h3>What is IPv6?</h3>
@@ -474,19 +491,19 @@
             <h3>Why IPv6?</h3>
             <div class="grid">
                 <div class="example-card">
-                    <h4>🚀 Address Space</h4>
+                    <h4>Address Space</h4>
                     <p>IPv6 provides 340 undecillion addresses vs IPv4's 4.3 billion, solving address exhaustion.</p>
                 </div>
                 <div class="example-card">
-                    <h4>🔒 Built-in Security</h4>
+                    <h4>Built-in Security</h4>
                     <p>IPsec is mandatory in IPv6, providing end-to-end encryption and authentication.</p>
                 </div>
                 <div class="example-card">
-                    <h4>⚡ Simplified Header</h4>
+                    <h4>Simplified Header</h4>
                     <p>More efficient routing with a streamlined 40-byte fixed header.</p>
                 </div>
                 <div class="example-card">
-                    <h4>🔄 Auto-Configuration</h4>
+                    <h4>Auto-Configuration</h4>
                     <p>SLAAC allows devices to configure themselves without DHCP servers.</p>
                 </div>
             </div>
@@ -579,12 +596,12 @@
 
         <!-- Addressing & Subnetting Section -->
         <section id="addressing" class="content-section glass">
-            <h2>🔢 Addressing & Subnetting</h2>
+            <h2>Addressing & Subnetting</h2>
 
             <h3>IPv6 Address Ranges</h3>
             
             <div class="example-card">
-                <h4>🔗 Link-Local Unicast (fe80::/10)</h4>
+                <h4>Link-Local Unicast (fe80::/10)</h4>
                 <p>Automatically configured on all IPv6-enabled interfaces. Used for neighbor discovery and local network communication. Not routable beyond the local link.</p>
                 <div class="code-block">
                     <code>fe80::/10 - Link-local range<br>
@@ -594,7 +611,7 @@ Example: fe80::1ff:fe23:4567:890a</code>
             </div>
 
             <div class="example-card">
-                <h4>🏠 Unique Local Addresses - ULA (fc00::/7)</h4>
+                <h4>Unique Local Addresses - ULA (fc00::/7)</h4>
                 <p>IPv6 equivalent of IPv4 private addresses. Routable within an organization but not on the global Internet.</p>
                 <div class="code-block">
                     <code>fc00::/8 - Centrally assigned (not yet defined)<br>
@@ -604,7 +621,7 @@ Example: fd12:3456:789a:1::1</code>
             </div>
 
             <div class="example-card">
-                <h4>🌍 Global Unicast (2000::/3)</h4>
+                <h4>Global Unicast (2000::/3)</h4>
                 <p>Main IPv6 address space for Internet-routable addresses. Equivalent to public IPv4 addresses.</p>
                 <div class="code-block">
                     <code>2000::/3 - Global unicast range<br>
@@ -614,7 +631,7 @@ Example: 2001:db8:85a3::8a2e:370:7334</code>
             </div>
 
             <div class="example-card">
-                <h4>📡 Multicast (ff00::/8)</h4>
+                <h4>Multicast (ff00::/8)</h4>
                 <p>One-to-many communication, replaces broadcast in IPv4.</p>
                 <div class="code-block">
                     <code>ff02::1 - All nodes (link-local)<br>
@@ -749,7 +766,7 @@ interface GigabitEthernet0/0<br>
 
         <!-- Routing & Protocols Section -->
         <section id="routing" class="content-section glass">
-            <h2>🛣️ Routing & Protocols</h2>
+            <h2>Routing & Protocols</h2>
 
             <h3>Dynamic Routing Protocols</h3>
 
@@ -852,7 +869,7 @@ S   ::/0 [1/0]<br>
 
             <div class="grid">
                 <div class="example-card">
-                    <h4>🔄 Dual Stack</h4>
+                    <h4>Dual Stack</h4>
                     <p><strong>Most recommended method</strong></p>
                     <ul>
                         <li>Run IPv4 and IPv6 simultaneously</li>
@@ -954,7 +971,7 @@ S   ::/0 [1/0]<br>
 
         <!-- Network Design Section -->
         <section id="network-design" class="content-section glass">
-            <h2>🏗️ Network Design & Hardware</h2>
+            <h2>Network Design & Hardware</h2>
 
             <h3>WAN Connectivity</h3>
             <div class="info-box info">
@@ -1199,7 +1216,7 @@ interface GigabitEthernet0/0<br>
 
         <!-- Tools & Troubleshooting Section -->
         <section id="tools" class="content-section glass">
-            <h2>🔧 Tools & Troubleshooting</h2>
+            <h2>Tools & Troubleshooting</h2>
 
             <h3>Cisco Packet Tracer</h3>
             <div class="info-box info">
@@ -1267,7 +1284,7 @@ sysctl -w net.ipv6.conf.all.forwarding=1</code>
                 </div>
 
                 <div class="example-card">
-                    <h4>🔧 Cisco IOS Commands</h4>
+                    <h4>Cisco IOS Commands</h4>
                     <div class="code-block">
                         <code># Show IPv6 interface brief<br>
 show ipv6 interface brief<br>
@@ -1428,7 +1445,7 @@ sudo ndp -c</code>
 
         <!-- VLSM Calculator Section -->
         <section id="vlsm-calculator" class="content-section glass">
-            <h2>🧮 VLSM & IP Allocation Table Builder</h2>
+            <h2>VLSM & IP Allocation Table Builder</h2>
 
             <div class="info-box info">
                 <p>Use this tool to calculate Variable Length Subnet Masks and generate IP allocation tables for your network design.</p>
@@ -1634,7 +1651,7 @@ sudo ndp -c</code>
 
         <!-- Practical Examples Section -->
         <section id="practical" class="content-section glass">
-            <h2>💡 Practical Examples & Activities</h2>
+            <h2>Practical Examples & Activities</h2>
 
             <h3>Activity 1: Configure Basic IPv6 on Router</h3>
             <div class="tool-container">
@@ -1909,7 +1926,7 @@ interface GigabitEthernet0/0<br>
 
         <!-- Footer -->
         <footer class="glass">
-            <h3>📚 Additional Resources</h3>
+            <h3>Additional Resources</h3>
             <p>
                 <a href="https://tools.ietf.org/html/rfc4291" target="_blank" style="color: white;">RFC 4291 - IPv6 Addressing Architecture</a> |
                 <a href="https://tools.ietf.org/html/rfc4862" target="_blank" style="color: white;">RFC 4862 - IPv6 SLAAC</a> |
@@ -2509,13 +2526,13 @@ interface GigabitEthernet0/0<br>
         function getAddressTypeInfo(address) {
             const type = getAddressType(address);
             const info = {
-                'Loopback': '🔁 Used for local host communication. Equivalent to 127.0.0.1 in IPv4.',
-                'Link-Local Unicast': '🔗 Automatically configured on all IPv6 interfaces. Not routable beyond local link.',
-                'Multicast': '📡 One-to-many communication. Replaces broadcast in IPv4.',
-                'Unique Local Address (ULA)': '🏠 Private IPv6 address. Routable within organization but not on Internet.',
-                'Documentation': '📚 Reserved for documentation and examples. Should never appear in production.',
-                'Global Unicast': '🌍 Globally routable address. Equivalent to public IPv4 addresses.',
-                'Unspecified': '❓ Indicates absence of address. Used before address is assigned.'
+                'Loopback': 'Used for local host communication. Equivalent to 127.0.0.1 in IPv4.',
+                'Link-Local Unicast': 'Automatically configured on all IPv6 interfaces. Not routable beyond local link.',
+                'Multicast': 'One-to-many communication. Replaces broadcast in IPv4.',
+                'Unique Local Address (ULA)': 'Private IPv6 address. Routable within organization but not on Internet.',
+                'Documentation': 'Reserved for documentation and examples. Should never appear in production.',
+                'Global Unicast': 'Globally routable address. Equivalent to public IPv4 addresses.',
+                'Unspecified': 'Indicates absence of address. Used before address is assigned.'
             };
             return info[type] || 'No additional information available.';
         }
@@ -2599,7 +2616,7 @@ interface GigabitEthernet0/0<br>
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            showSearchNotification('📥 Downloading IPv6 Cheatsheet as Markdown!', 'success');
+            showSearchNotification('Downloading IPv6 Cheatsheet as Markdown!', 'success');
         }
 
         // Enter key support for search
