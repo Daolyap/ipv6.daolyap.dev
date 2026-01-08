@@ -59,7 +59,7 @@ A comprehensive, interactive educational web application for learning IPv6 netwo
 - ✅ Step-by-step troubleshooting flowchart
 - ✅ Common issues and solutions
 
-## �� Getting Started
+## Getting Started
 
 ### View Online
 Simply open `index.html` in any modern web browser. No installation or build process required!

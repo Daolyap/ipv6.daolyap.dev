@@ -400,6 +400,28 @@
             }
         }
 
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+        }
+
         .content-section.active {
             animation: fadeIn 0.5s ease-in;
         }
@@ -429,13 +451,13 @@
 
         <!-- Navigation Tabs -->
         <nav class="nav-tabs glass">
-            <button class="tab-btn active" onclick="showSection('overview')">Overview</button>
-            <button class="tab-btn" onclick="showSection('addressing')">Addressing & Subnetting</button>
-            <button class="tab-btn" onclick="showSection('routing')">Routing & Protocols</button>
-            <button class="tab-btn" onclick="showSection('network-design')">Network Design</button>
-            <button class="tab-btn" onclick="showSection('tools')">Tools & Troubleshooting</button>
-            <button class="tab-btn" onclick="showSection('vlsm-calculator')">VLSM Calculator</button>
-            <button class="tab-btn" onclick="showSection('practical')">Practical Examples</button>
+            <button class="tab-btn active" data-section="overview" onclick="showSection('overview', this)">Overview</button>
+            <button class="tab-btn" data-section="addressing" onclick="showSection('addressing', this)">Addressing & Subnetting</button>
+            <button class="tab-btn" data-section="routing" onclick="showSection('routing', this)">Routing & Protocols</button>
+            <button class="tab-btn" data-section="network-design" onclick="showSection('network-design', this)">Network Design</button>
+            <button class="tab-btn" data-section="tools" onclick="showSection('tools', this)">Tools & Troubleshooting</button>
+            <button class="tab-btn" data-section="vlsm-calculator" onclick="showSection('vlsm-calculator', this)">VLSM Calculator</button>
+            <button class="tab-btn" data-section="practical" onclick="showSection('practical', this)">Practical Examples</button>
         </nav>
 
         <!-- Content Sections -->
@@ -1054,25 +1076,25 @@ ipv6 route ::/0 Serial0/0/0 2001:db8:ffff::1</code>
 # Set hostname<br>
 hostname Router-HQ<br>
 <br>
-# Secure privileged EXEC mode<br>
-enable secret Str0ngP@ssw0rd<br>
+# Secure privileged EXEC mode (use strong unique passwords)<br>
+enable secret [ENABLE_SECRET_PASSWORD]<br>
 <br>
 # Secure console access<br>
 line console 0<br>
- password C0ns0leP@ss<br>
+ password [CONSOLE_PASSWORD]<br>
  login<br>
  logging synchronous<br>
  exec-timeout 5 0<br>
 <br>
 # Secure VTY (Telnet/SSH) access<br>
 line vty 0 4<br>
- password VtyP@ssw0rd<br>
+ password [VTY_PASSWORD]<br>
  login local<br>
  transport input ssh<br>
  exec-timeout 10 0<br>
 <br>
 # Create local users<br>
-username admin privilege 15 secret Adm1nP@ss<br>
+username admin privilege 15 secret [ADMIN_PASSWORD]<br>
 <br>
 # Enable SSH<br>
 ip domain-name company.local<br>
@@ -1905,7 +1927,7 @@ interface GigabitEthernet0/0<br>
         let ipv6Counter = 1;
 
         // Tab Navigation
-        function showSection(sectionId) {
+        function showSection(sectionId, clickedElement) {
             // Hide all sections
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => section.classList.remove('active'));
@@ -1918,14 +1940,18 @@ interface GigabitEthernet0/0<br>
             document.getElementById(sectionId).classList.add('active');
             
             // Add active class to clicked tab
-            event.target.classList.add('active');
+            if (clickedElement) {
+                clickedElement.classList.add('active');
+            }
         }
 
         // Search Functionality
         function performSearch() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searchResult = document.getElementById('searchResult');
+            
             if (!searchTerm) {
-                alert('Please enter a search term');
+                showSearchNotification('Please enter a search term', 'warning');
                 return;
             }
 
@@ -1945,11 +1971,45 @@ interface GigabitEthernet0/0<br>
                 // Show first matching section
                 showSectionById(results[0]);
                 
-                // Highlight search term (simple implementation)
-                alert(`Found "${searchTerm}" in ${results.length} section(s). Showing first match.`);
+                // Show in-page notification
+                showSearchNotification(`Found "${searchTerm}" in ${results.length} section(s). Showing first match.`, 'success');
             } else {
-                alert(`No results found for "${searchTerm}"`);
+                showSearchNotification(`No results found for "${searchTerm}"`, 'error');
             }
+        }
+
+        function showSearchNotification(message, type) {
+            // Remove existing notification if any
+            const existing = document.getElementById('searchNotification');
+            if (existing) {
+                existing.remove();
+            }
+
+            // Create notification
+            const notification = document.createElement('div');
+            notification.id = 'searchNotification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                background: ${type === 'success' ? 'rgba(72, 187, 120, 0.95)' : type === 'error' ? 'rgba(245, 101, 101, 0.95)' : 'rgba(237, 137, 54, 0.95)'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                z-index: 10000;
+                font-size: 16px;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
 
         function showSectionById(sectionId) {
@@ -1961,9 +2021,10 @@ interface GigabitEthernet0/0<br>
             
             document.getElementById(sectionId).classList.add('active');
             
-            // Find and activate corresponding tab
+            // Find and activate corresponding tab using data attribute
             tabs.forEach(tab => {
-                if (tab.onclick && tab.onclick.toString().includes(sectionId)) {
+                const tabSection = tab.getAttribute('data-section');
+                if (tabSection === sectionId) {
                     tab.classList.add('active');
                 }
             });
@@ -1979,8 +2040,16 @@ interface GigabitEthernet0/0<br>
                 return;
             }
 
+            // Validate IPv6 address format
+            const ipv6Pattern = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|::)$/;
+            
+            if (!ipv6Pattern.test(input)) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
+                return;
+            }
+
             try {
-                // Basic compression algorithm
+                // Normalize the address first
                 let compressed = input.toLowerCase();
                 
                 // Remove leading zeros from each block
@@ -1988,28 +2057,46 @@ interface GigabitEthernet0/0<br>
                     return block.replace(/^0+/, '') || '0';
                 }).join(':');
                 
-                // Find longest sequence of zeros
-                let maxZeroSeq = '';
-                let maxZeroSeqLength = 0;
-                let currentZeroSeq = '';
-                
+                // Find longest sequence of consecutive zero blocks by index
                 const blocks = compressed.split(':');
+                let bestStart = -1;
+                let bestLen = 0;
+                let curStart = -1;
+                let curLen = 0;
+
                 for (let i = 0; i < blocks.length; i++) {
                     if (blocks[i] === '0') {
-                        currentZeroSeq += ':0';
-                        if (currentZeroSeq.length > maxZeroSeqLength) {
-                            maxZeroSeq = currentZeroSeq;
-                            maxZeroSeqLength = currentZeroSeq.length;
+                        if (curLen === 0) {
+                            curStart = i;
+                        }
+                        curLen++;
+                        if (curLen > bestLen) {
+                            bestLen = curLen;
+                            bestStart = curStart;
                         }
                     } else {
-                        currentZeroSeq = '';
+                        curLen = 0;
+                        curStart = -1;
                     }
                 }
-                
-                // Replace longest sequence with ::
-                if (maxZeroSeq) {
-                    compressed = compressed.replace(maxZeroSeq.substring(1), ':');
-                    compressed = compressed.replace(/:{3,}/, '::');
+
+                // Only compress runs of length >= 2, per IPv6 conventions
+                if (bestLen >= 2) {
+                    const before = blocks.slice(0, bestStart).join(':');
+                    const after = blocks.slice(bestStart + bestLen).join(':');
+                    if (before && after) {
+                        compressed = before + '::' + after;
+                    } else if (before) {
+                        compressed = before + '::';
+                    } else if (after) {
+                        compressed = '::' + after;
+                    } else {
+                        // All zeros
+                        compressed = '::';
+                    }
+                } else {
+                    // No compressible zero run found; just use the normalized blocks
+                    compressed = blocks.join(':');
                 }
                 
                 result.innerHTML = `
@@ -2018,7 +2105,7 @@ interface GigabitEthernet0/0<br>
                     <strong>Original:</strong> <code>${input}</code>
                 `;
             } catch (error) {
-                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
+                result.innerHTML = '<span style="color: #f56565;">Error processing IPv6 address</span>';
             }
         }
 
@@ -2049,6 +2136,13 @@ interface GigabitEthernet0/0<br>
                 return;
             }
 
+            // Validate network address format
+            const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
+            if (!ipv4Pattern.test(networkAddr)) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv4 address format</span>';
+                return;
+            }
+
             // Collect all subnet requirements
             let subnets = [];
             for (let i = 1; i <= subnetCounter; i++) {
@@ -2059,35 +2153,55 @@ interface GigabitEthernet0/0<br>
                 }
             }
 
+            if (subnets.length === 0) {
+                result.innerHTML = '<span style="color: #f56565;">Please add at least one subnet requirement</span>';
+                return;
+            }
+
             // Sort by hosts (descending)
             subnets.sort((a, b) => b.hosts - a.hosts);
 
             // Generate allocation table
             let html = '<h4 style="color: #48bb78;">VLSM Allocation Table</h4>';
             html += '<table style="width: 100%;"><thead><tr>';
-            html += '<th>Subnet Name</th><th>Required Hosts</th><th>CIDR</th><th>Subnet Mask</th><th>Usable IPs</th>';
+            html += '<th>Subnet Name</th><th>Required Hosts</th><th>CIDR</th><th>Subnet Mask</th><th>Network Address</th><th>Usable IPs</th>';
             html += '</tr></thead><tbody>';
 
-            let currentOctet = parseInt(networkAddr.split('.')[3]);
-            const baseOctets = networkAddr.split('.').slice(0, 3).join('.');
+            // Convert network address to 32-bit integer
+            const octets = networkAddr.split('.').map(n => parseInt(n));
+            let currentAddress = (octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3];
 
             subnets.forEach((subnet, index) => {
                 const subnetMask = cidrToMask(subnet.cidr);
                 const blockSize = Math.pow(2, 32 - subnet.cidr);
                 const usableHosts = blockSize - 2;
-                const subnetAddr = `${baseOctets}.${currentOctet}`;
-                const firstUsable = `${baseOctets}.${currentOctet + 1}`;
-                const lastUsable = `${baseOctets}.${currentOctet + blockSize - 2}`;
+                
+                // Convert current address to dotted decimal
+                const o1 = (currentAddress >>> 24) & 0xFF;
+                const o2 = (currentAddress >>> 16) & 0xFF;
+                const o3 = (currentAddress >>> 8) & 0xFF;
+                const o4 = currentAddress & 0xFF;
+                const subnetAddr = `${o1}.${o2}.${o3}.${o4}`;
+                
+                // Calculate first and last usable
+                const firstUsable = `${o1}.${o2}.${o3}.${o4 + 1}`;
+                const lastAddr = currentAddress + blockSize - 1;
+                const l1 = (lastAddr >>> 24) & 0xFF;
+                const l2 = (lastAddr >>> 16) & 0xFF;
+                const l3 = (lastAddr >>> 8) & 0xFF;
+                const l4 = (lastAddr - 1) & 0xFF;
+                const lastUsable = `${l1}.${l2}.${l3}.${l4}`;
                 
                 html += `<tr>
                     <td><strong>${subnet.name}</strong></td>
                     <td>${subnet.hosts}</td>
                     <td>/${subnet.cidr}</td>
                     <td>${subnetMask}</td>
+                    <td>${subnetAddr}</td>
                     <td>${firstUsable} - ${lastUsable}</td>
                 </tr>`;
                 
-                currentOctet += blockSize;
+                currentAddress += blockSize;
             });
 
             html += '</tbody></table>';
@@ -2106,12 +2220,19 @@ interface GigabitEthernet0/0<br>
         }
 
         function cidrToMask(cidr) {
-            const masks = {
-                30: '255.255.255.252', 29: '255.255.255.248', 28: '255.255.255.240',
-                27: '255.255.255.224', 26: '255.255.255.192', 25: '255.255.255.128',
-                24: '255.255.255.0', 16: '255.255.0.0', 8: '255.0.0.0'
-            };
-            return masks[cidr] || 'Calculated';
+            // Convert CIDR prefix length (0–32) to dotted-decimal subnet mask
+            cidr = Number(cidr);
+            if (!Number.isInteger(cidr) || cidr < 0 || cidr > 32) {
+                return 'Invalid CIDR';
+            }
+
+            const octets = [];
+            for (let i = 0; i < 4; i++) {
+                const bits = Math.min(8, Math.max(0, cidr - i * 8));
+                const octet = bits === 0 ? 0 : 256 - Math.pow(2, 8 - bits);
+                octets.push(octet);
+            }
+            return octets.join('.');
         }
 
         // IPv6 Allocation Table
@@ -2179,11 +2300,18 @@ interface GigabitEthernet0/0<br>
 
         // Ping Simulator
         function simulatePing() {
-            const target = document.getElementById('pingTarget').value;
+            const target = document.getElementById('pingTarget').value.trim();
             const result = document.getElementById('pingResult');
             
             if (!target) {
                 result.innerHTML = '<span style="color: #f56565;">Please enter target address</span>';
+                return;
+            }
+
+            // Basic validation
+            const ipv6Pattern = /^([0-9a-fA-F:]+|::1|::)$/;
+            if (!ipv6Pattern.test(target)) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
                 return;
             }
 
@@ -2251,12 +2379,19 @@ interface GigabitEthernet0/0<br>
 
         // Static Route Generator
         function generateStaticRoute() {
-            const dest = document.getElementById('destNetwork').value;
-            const nextHop = document.getElementById('nextHop').value;
+            const dest = document.getElementById('destNetwork').value.trim();
+            const nextHop = document.getElementById('nextHop').value.trim();
             const result = document.getElementById('staticRouteResult');
             
             if (!dest || !nextHop) {
                 result.innerHTML = '<span style="color: #f56565;">Please enter both destination and next-hop</span>';
+                return;
+            }
+
+            // Basic IPv6 validation
+            const ipv6Pattern = /^([0-9a-fA-F:]+)(\/\d+)?$/;
+            if (!ipv6Pattern.test(dest) || !ipv6Pattern.test(nextHop.split('%')[0])) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
                 return;
             }
 
@@ -2288,14 +2423,37 @@ interface GigabitEthernet0/0<br>
             const [address, prefix] = input.split('/');
             const prefixNum = parseInt(prefix) || 64;
             
+            // Validate prefix
+            if (prefixNum < 0 || prefixNum > 128) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid prefix length (must be 0-128)</span>';
+                return;
+            }
+
+            const hostBits = 128 - prefixNum;
+            let addressCount;
+            
+            // Use BigInt for accurate large number representation
+            if (hostBits <= 53) {
+                // Safe for regular JavaScript numbers
+                addressCount = Math.pow(2, hostBits).toLocaleString();
+            } else {
+                // Use BigInt for larger values
+                try {
+                    const bigCount = BigInt(2) ** BigInt(hostBits);
+                    addressCount = bigCount.toLocaleString();
+                } catch (e) {
+                    addressCount = `2^${hostBits} (very large number)`;
+                }
+            }
+            
             result.innerHTML = `
                 <strong style="color: #48bb78;">Subnet Information:</strong><br><br>
                 <table style="width: 100%;">
                     <tr><td><strong>Full Address:</strong></td><td><code>${input}</code></td></tr>
                     <tr><td><strong>Prefix Length:</strong></td><td>/${prefixNum}</td></tr>
                     <tr><td><strong>Network Bits:</strong></td><td>${prefixNum} bits</td></tr>
-                    <tr><td><strong>Host Bits:</strong></td><td>${128 - prefixNum} bits</td></tr>
-                    <tr><td><strong>Total Addresses:</strong></td><td>2^${128 - prefixNum} (${Math.pow(2, Math.min(128 - prefixNum, 30)).toLocaleString()}${(128 - prefixNum) > 30 ? '+' : ''})</td></tr>
+                    <tr><td><strong>Host Bits:</strong></td><td>${hostBits} bits</td></tr>
+                    <tr><td><strong>Total Addresses:</strong></td><td>${addressCount}</td></tr>
                     <tr><td><strong>Address Type:</strong></td><td>${getAddressType(address)}</td></tr>
                 </table>
             `;
@@ -2303,11 +2461,18 @@ interface GigabitEthernet0/0<br>
 
         // Address Type Identifier
         function identifyAddressType() {
-            const address = document.getElementById('addressType').value.toLowerCase();
+            const address = document.getElementById('addressType').value.trim().toLowerCase();
             const result = document.getElementById('addressTypeResult');
             
             if (!address) {
                 result.innerHTML = '<span style="color: #f56565;">Please enter IPv6 address</span>';
+                return;
+            }
+
+            // Basic validation
+            const ipv6Pattern = /^([0-9a-fA-F:]+|::1|::)$/;
+            if (!ipv6Pattern.test(address)) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
                 return;
             }
 
@@ -2363,18 +2528,63 @@ interface GigabitEthernet0/0<br>
             
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => {
-                const heading = section.querySelector('h2');
-                if (heading) {
-                    markdown += `## ${heading.textContent}\n\n`;
+                // Process headers
+                const h2 = section.querySelector('h2');
+                if (h2) {
+                    markdown += `## ${h2.textContent.trim()}\n\n`;
                 }
                 
-                // Extract text content (simplified)
-                const paragraphs = section.querySelectorAll('p, li, code, td, th');
-                paragraphs.forEach(p => {
-                    if (p.textContent.trim()) {
-                        markdown += p.textContent.trim() + '\n';
+                // Process h3 headers
+                section.querySelectorAll('h3').forEach(h3 => {
+                    markdown += `### ${h3.textContent.trim()}\n\n`;
+                });
+                
+                // Process h4 headers
+                section.querySelectorAll('h4').forEach(h4 => {
+                    markdown += `#### ${h4.textContent.trim()}\n\n`;
+                });
+                
+                // Process paragraphs
+                section.querySelectorAll('p').forEach(p => {
+                    const text = p.textContent.trim();
+                    if (text && !p.closest('.result-box')) {
+                        markdown += `${text}\n\n`;
                     }
                 });
+                
+                // Process lists
+                section.querySelectorAll('ul, ol').forEach(list => {
+                    if (!list.closest('.result-box')) {
+                        list.querySelectorAll('li').forEach(li => {
+                            const bullet = list.tagName === 'OL' ? '1.' : '-';
+                            markdown += `${bullet} ${li.textContent.trim()}\n`;
+                        });
+                        markdown += '\n';
+                    }
+                });
+                
+                // Process code blocks
+                section.querySelectorAll('.code-block').forEach(code => {
+                    markdown += '```\n';
+                    markdown += code.textContent.trim();
+                    markdown += '\n```\n\n';
+                });
+                
+                // Process tables
+                section.querySelectorAll('table').forEach(table => {
+                    if (!table.closest('.result-box')) {
+                        const rows = Array.from(table.querySelectorAll('tr'));
+                        rows.forEach((row, idx) => {
+                            const cells = Array.from(row.querySelectorAll('th, td'));
+                            markdown += '| ' + cells.map(c => c.textContent.trim()).join(' | ') + ' |\n';
+                            if (idx === 0) {
+                                markdown += '| ' + cells.map(() => '---').join(' | ') + ' |\n';
+                            }
+                        });
+                        markdown += '\n';
+                    }
+                });
+                
                 markdown += '\n---\n\n';
             });
             
@@ -2389,7 +2599,7 @@ interface GigabitEthernet0/0<br>
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert('📥 Downloading IPv6 Cheatsheet as Markdown!');
+            showSearchNotification('📥 Downloading IPv6 Cheatsheet as Markdown!', 'success');
         }
 
         // Enter key support for search
