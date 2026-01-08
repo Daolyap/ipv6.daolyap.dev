@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv6 Cheatsheet - Complete Educational Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-color: #2d3748;
+            --light-text: #4a5568;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism styles */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px 30px;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 20px 30px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 30px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h2 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section h3 {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .content-section h4 {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .content-section p,
+        .content-section li {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .content-section ul,
+        .content-section ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .info-box.success {
+            border-left-color: #48bb78;
+        }
+
+        .info-box.warning {
+            border-left-color: #ed8936;
+        }
+
+        .info-box.error {
+            border-left-color: #f56565;
+        }
+
+        .info-box.info {
+            border-left-color: #4299e1;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #a8e6cf;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: #a8e6cf;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 15px;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Interactive Tools */
+        .tool-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+
+        .tool-container h3 {
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+
+        .result-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: white;
+            min-height: 60px;
+        }
+
+        /* Example Cards */
+        .example-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .example-card h4 {
+            margin-top: 0;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .comparison-item h4 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                padding: 15px;
+            }
+
+            .tab-btn {
+                font-size: 14px;
+                padding: 10px 18px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section.active {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Hide elements by default */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="glass">
+            <h1>🌐 IPv6 Cheatsheet</h1>
+            <p>Your Complete Educational Guide from Beginner to Professional</p>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container glass">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for IPv6 topics, commands, or concepts...">
+                <button class="btn" onclick="performSearch()">Search</button>
+                <button class="btn" onclick="downloadMarkdown()">📥 Download</button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs glass">
+            <button class="tab-btn active" onclick="showSection('overview')">Overview</button>
+            <button class="tab-btn" onclick="showSection('addressing')">Addressing & Subnetting</button>
+            <button class="tab-btn" onclick="showSection('routing')">Routing & Protocols</button>
+            <button class="tab-btn" onclick="showSection('network-design')">Network Design</button>
+            <button class="tab-btn" onclick="showSection('tools')">Tools & Troubleshooting</button>
+            <button class="tab-btn" onclick="showSection('vlsm-calculator')">VLSM Calculator</button>
+            <button class="tab-btn" onclick="showSection('practical')">Practical Examples</button>
+        </nav>
+
+        <!-- Content Sections -->
+
+        <!-- Overview Section -->
+        <section id="overview" class="content-section glass active">
+            <h2>📚 IPv6 Overview</h2>
+            
+            <div class="info-box info">
+                <h3>What is IPv6?</h3>
+                <p>IPv6 (Internet Protocol version 6) is the most recent version of the Internet Protocol, designed to replace IPv4. It provides a vastly larger address space with 128-bit addresses, supporting approximately 340 undecillion (3.4×10³⁸) unique addresses.</p>
+            </div>
+
+            <h3>Why IPv6?</h3>
+            <div class="grid">
+                <div class="example-card">
+                    <h4>🚀 Address Space</h4>
+                    <p>IPv6 provides 340 undecillion addresses vs IPv4's 4.3 billion, solving address exhaustion.</p>
+                </div>
+                <div class="example-card">
+                    <h4>🔒 Built-in Security</h4>
+                    <p>IPsec is mandatory in IPv6, providing end-to-end encryption and authentication.</p>
+                </div>
+                <div class="example-card">
+                    <h4>⚡ Simplified Header</h4>
+                    <p>More efficient routing with a streamlined 40-byte fixed header.</p>
+                </div>
+                <div class="example-card">
+                    <h4>🔄 Auto-Configuration</h4>
+                    <p>SLAAC allows devices to configure themselves without DHCP servers.</p>
+                </div>
+            </div>
+
+            <h3>IPv6 vs IPv4 Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>IPv4</th>
+                        <th>IPv6</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Address Length</strong></td>
+                        <td>32 bits</td>
+                        <td>128 bits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address Format</strong></td>
+                        <td>Dotted decimal (192.168.1.1)</td>
+                        <td>Hexadecimal with colons (2001:db8::1)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address Space</strong></td>
+                        <td>~4.3 billion</td>
+                        <td>~340 undecillion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Private Addresses</strong></td>
+                        <td>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16</td>
+                        <td>fc00::/7 (ULA)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Loopback</strong></td>
+                        <td>127.0.0.1</td>
+                        <td>::1</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Link-Local</strong></td>
+                        <td>169.254.0.0/16 (APIPA)</td>
+                        <td>fe80::/10</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Broadcast</strong></td>
+                        <td>Yes (255.255.255.255)</td>
+                        <td>No (uses multicast)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Default Subnet</strong></td>
+                        <td>Varies (/24 common)</td>
+                        <td>/64 (standard)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Configuration</strong></td>
+                        <td>Manual or DHCP</td>
+                        <td>SLAAC, DHCPv6, or manual</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Header Size</strong></td>
+                        <td>20-60 bytes (variable)</td>
+                        <td>40 bytes (fixed)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>IPv6 Address Format</h3>
+            <div class="info-box">
+                <h4>Address Notation Rules</h4>
+                <ul>
+                    <li><strong>Full format:</strong> <code>2001:0db8:0000:0000:0001:0000:0000:0001</code></li>
+                    <li><strong>Compressed format:</strong> <code>2001:db8::1:0:0:1</code></li>
+                    <li><strong>Leading zeros</strong> can be omitted in each block</li>
+                    <li><strong>Double colon (::)</strong> replaces consecutive zero blocks (only once per address)</li>
+                    <li><strong>CIDR notation:</strong> <code>2001:db8::/32</code></li>
+                </ul>
+            </div>
+
+            <div class="tool-container">
+                <h3>IPv6 Address Compressor</h3>
+                <div class="input-group">
+                    <label>Enter Full IPv6 Address:</label>
+                    <input type="text" id="ipv6Full" placeholder="2001:0db8:0000:0000:0001:0000:0000:0001">
+                </div>
+                <button class="btn" onclick="compressIPv6()">Compress</button>
+                <div class="result-box" id="compressResult"></div>
+            </div>
+        </section>
+
+        <!-- Addressing & Subnetting Section -->
+        <section id="addressing" class="content-section glass">
+            <h2>🔢 Addressing & Subnetting</h2>
+
+            <h3>IPv6 Address Ranges</h3>
+            
+            <div class="example-card">
+                <h4>🔗 Link-Local Unicast (fe80::/10)</h4>
+                <p>Automatically configured on all IPv6-enabled interfaces. Used for neighbor discovery and local network communication. Not routable beyond the local link.</p>
+                <div class="code-block">
+                    <code>fe80::/10 - Link-local range<br>
+fe80::/64 - Most common configuration<br>
+Example: fe80::1ff:fe23:4567:890a</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>🏠 Unique Local Addresses - ULA (fc00::/7)</h4>
+                <p>IPv6 equivalent of IPv4 private addresses. Routable within an organization but not on the global Internet.</p>
+                <div class="code-block">
+                    <code>fc00::/8 - Centrally assigned (not yet defined)<br>
+fd00::/8 - Locally assigned<br>
+Example: fd12:3456:789a:1::1</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>🌍 Global Unicast (2000::/3)</h4>
+                <p>Main IPv6 address space for Internet-routable addresses. Equivalent to public IPv4 addresses.</p>
+                <div class="code-block">
+                    <code>2000::/3 - Global unicast range<br>
+Allocated by IANA to RIRs<br>
+Example: 2001:db8:85a3::8a2e:370:7334</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>📡 Multicast (ff00::/8)</h4>
+                <p>One-to-many communication, replaces broadcast in IPv4.</p>
+                <div class="code-block">
+                    <code>ff02::1 - All nodes (link-local)<br>
+ff02::2 - All routers (link-local)<br>
+ff02::1:ff00:0/104 - Solicited-node multicast</code>
+                </div>
+            </div>
+
+            <h3>Special IPv6 Addresses</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Address</th>
+                        <th>Description</th>
+                        <th>IPv4 Equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>::1/128</code></td>
+                        <td>Loopback address</td>
+                        <td>127.0.0.1</td>
+                    </tr>
+                    <tr>
+                        <td><code>::/128</code></td>
+                        <td>Unspecified address</td>
+                        <td>0.0.0.0</td>
+                    </tr>
+                    <tr>
+                        <td><code>2001:db8::/32</code></td>
+                        <td>Documentation prefix</td>
+                        <td>192.0.2.0/24</td>
+                    </tr>
+                    <tr>
+                        <td><code>::ffff:0:0/96</code></td>
+                        <td>IPv4-mapped IPv6</td>
+                        <td>N/A</td>
+                    </tr>
+                    <tr>
+                        <td><code>64:ff9b::/96</code></td>
+                        <td>IPv4/IPv6 translation</td>
+                        <td>N/A</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>VLSM (Variable Length Subnet Masking)</h3>
+            <div class="info-box info">
+                <p>VLSM allows efficient use of IP address space by creating subnets of different sizes based on requirements. In IPv6, while the standard subnet is /64, you can use other prefix lengths for point-to-point links or special purposes.</p>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h4>IPv4 VLSM Example</h4>
+                    <p><strong>Network:</strong> 10.0.0.0/8</p>
+                    <ul>
+                        <li>Sales (224 hosts): 10.0.1.0/24</li>
+                        <li>IT (32 hosts): 10.0.2.0/27</li>
+                        <li>Management (14 hosts): 10.0.2.32/28</li>
+                        <li>Point-to-point: 10.0.2.48/30</li>
+                    </ul>
+                </div>
+                <div class="comparison-item">
+                    <h4>IPv6 VLSM Example</h4>
+                    <p><strong>Network:</strong> 2001:db8::/32</p>
+                    <ul>
+                        <li>Site A: 2001:db8:a::/48</li>
+                        <li>Building 1: 2001:db8:a:1::/64</li>
+                        <li>Building 2: 2001:db8:a:2::/64</li>
+                        <li>P2P links: 2001:db8:a:fff::/127</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Dual-Stack Configuration</h3>
+            <div class="info-box success">
+                <p>Dual-stack allows running both IPv4 and IPv6 simultaneously on the same interface. This is the most common migration strategy.</p>
+            </div>
+
+            <div class="code-block">
+                <code># Cisco Router Dual-Stack Configuration<br>
+interface GigabitEthernet0/0<br>
+ ip address 192.168.1.1 255.255.255.0<br>
+ ipv6 address 2001:db8:1::1/64<br>
+ ipv6 enable<br>
+ no shutdown</code>
+            </div>
+
+            <h3>Subnet Prefix Lengths</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Prefix Length</th>
+                        <th>Number of Subnets</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/32</td>
+                        <td>4,294,967,296 /64s</td>
+                        <td>ISP allocation</td>
+                    </tr>
+                    <tr>
+                        <td>/48</td>
+                        <td>65,536 /64s</td>
+                        <td>Enterprise site</td>
+                    </tr>
+                    <tr>
+                        <td>/56</td>
+                        <td>256 /64s</td>
+                        <td>Small organization</td>
+                    </tr>
+                    <tr>
+                        <td>/64</td>
+                        <td>Standard subnet</td>
+                        <td>LAN segment</td>
+                    </tr>
+                    <tr>
+                        <td>/127</td>
+                        <td>2 addresses</td>
+                        <td>Point-to-point links</td>
+                    </tr>
+                    <tr>
+                        <td>/128</td>
+                        <td>Single address</td>
+                        <td>Host route</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Routing & Protocols Section -->
+        <section id="routing" class="content-section glass">
+            <h2>🛣️ Routing & Protocols</h2>
+
+            <h3>Dynamic Routing Protocols</h3>
+
+            <div class="example-card">
+                <h4>OSPFv3 (Open Shortest Path First for IPv6)</h4>
+                <p>Link-state routing protocol for IPv6. Runs directly over IPv6, uses link-local addresses for neighbor communication.</p>
+                <div class="code-block">
+                    <code># Cisco OSPFv3 Configuration<br>
+ipv6 router ospf 1<br>
+ router-id 1.1.1.1<br>
+ log-adjacency-changes<br>
+<br>
+interface GigabitEthernet0/0<br>
+ ipv6 address 2001:db8:1::1/64<br>
+ ipv6 ospf 1 area 0</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>EIGRP for IPv6</h4>
+                <p>Cisco's advanced distance-vector protocol. Enhanced IGRP with support for IPv6.</p>
+                <div class="code-block">
+                    <code># Cisco EIGRP IPv6 Configuration<br>
+ipv6 router eigrp 100<br>
+ eigrp router-id 1.1.1.1<br>
+ no shutdown<br>
+<br>
+interface GigabitEthernet0/0<br>
+ ipv6 address 2001:db8:1::1/64<br>
+ ipv6 eigrp 100</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>RIPng (RIP next generation)</h4>
+                <p>Distance-vector routing protocol for IPv6. Uses hop count as metric (max 15 hops).</p>
+                <div class="code-block">
+                    <code># Cisco RIPng Configuration<br>
+ipv6 router rip RIPNG<br>
+<br>
+interface GigabitEthernet0/0<br>
+ ipv6 address 2001:db8:1::1/64<br>
+ ipv6 rip RIPNG enable</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>BGP4+ (BGP for IPv6)</h4>
+                <p>Exterior Gateway Protocol for IPv6. Used between autonomous systems.</p>
+                <div class="code-block">
+                    <code># Cisco BGP IPv6 Configuration<br>
+router bgp 65001<br>
+ bgp router-id 1.1.1.1<br>
+ neighbor 2001:db8::2 remote-as 65002<br>
+ address-family ipv6<br>
+  neighbor 2001:db8::2 activate<br>
+  network 2001:db8:1::/48</code>
+                </div>
+            </div>
+
+            <h3>Static Routing</h3>
+            <div class="info-box info">
+                <p>Static routes are manually configured and don't change unless administratively modified. Useful for small networks or specific routing requirements.</p>
+            </div>
+
+            <div class="code-block">
+                <code># IPv6 Static Route Examples<br>
+<br>
+# Basic static route<br>
+ipv6 route 2001:db8:2::/64 2001:db8:1::2<br>
+<br>
+# Static route with exit interface<br>
+ipv6 route 2001:db8:3::/64 GigabitEthernet0/1<br>
+<br>
+# Static route with both next-hop and exit interface<br>
+ipv6 route 2001:db8:4::/64 GigabitEthernet0/1 2001:db8:1::2<br>
+<br>
+# Default route<br>
+ipv6 route ::/0 2001:db8:1::1</code>
+            </div>
+
+            <h3>Default Routing</h3>
+            <div class="info-box warning">
+                <p>A default route (::/0) is the "gateway of last resort" - used when no specific route matches the destination.</p>
+            </div>
+
+            <div class="code-block">
+                <code># Configure default route to ISP<br>
+ipv6 route ::/0 Serial0/0/0 2001:db8:ff::1<br>
+<br>
+# Verify default route<br>
+show ipv6 route<br>
+<br>
+# Output should show:<br>
+S   ::/0 [1/0]<br>
+     via 2001:db8:ff::1, Serial0/0/0</code>
+            </div>
+
+            <h3>Migration Mechanisms</h3>
+
+            <div class="grid">
+                <div class="example-card">
+                    <h4>🔄 Dual Stack</h4>
+                    <p><strong>Most recommended method</strong></p>
+                    <ul>
+                        <li>Run IPv4 and IPv6 simultaneously</li>
+                        <li>Devices choose best protocol</li>
+                        <li>Gradual transition</li>
+                        <li>No translation needed</li>
+                    </ul>
+                </div>
+
+                <div class="example-card">
+                    <h4>🚇 Tunneling</h4>
+                    <p><strong>Encapsulate IPv6 in IPv4</strong></p>
+                    <ul>
+                        <li><strong>6to4:</strong> Automatic tunnel</li>
+                        <li><strong>ISATAP:</strong> Intra-site tunnel</li>
+                        <li><strong>Teredo:</strong> NAT traversal</li>
+                        <li><strong>GRE:</strong> Manual tunnel</li>
+                    </ul>
+                </div>
+
+                <div class="example-card">
+                    <h4>🔀 Translation</h4>
+                    <p><strong>Convert between protocols</strong></p>
+                    <ul>
+                        <li><strong>NAT64:</strong> Network translation</li>
+                        <li><strong>DNS64:</strong> DNS translation</li>
+                        <li>Used when dual-stack not possible</li>
+                        <li>Can break some applications</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Routing Protocol Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Type</th>
+                        <th>Metric</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OSPFv3</td>
+                        <td>Link-state</td>
+                        <td>Cost</td>
+                        <td>Large enterprises</td>
+                    </tr>
+                    <tr>
+                        <td>EIGRP</td>
+                        <td>Advanced distance-vector</td>
+                        <td>Composite</td>
+                        <td>Cisco networks</td>
+                    </tr>
+                    <tr>
+                        <td>RIPng</td>
+                        <td>Distance-vector</td>
+                        <td>Hop count</td>
+                        <td>Small networks</td>
+                    </tr>
+                    <tr>
+                        <td>BGP4+</td>
+                        <td>Path-vector</td>
+                        <td>Path attributes</td>
+                        <td>Internet/ISP</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Neighbor Discovery Protocol (NDP)</h3>
+            <div class="info-box info">
+                <p>NDP is fundamental to IPv6 operation. It replaces ARP, ICMP Router Discovery, and ICMP Redirect from IPv4.</p>
+            </div>
+
+            <div class="grid">
+                <div class="example-card">
+                    <h4>Router Solicitation (RS)</h4>
+                    <p>Hosts send RS to find routers on the link</p>
+                    <code>ICMPv6 Type 133</code>
+                </div>
+                <div class="example-card">
+                    <h4>Router Advertisement (RA)</h4>
+                    <p>Routers send RA with network info</p>
+                    <code>ICMPv6 Type 134</code>
+                </div>
+                <div class="example-card">
+                    <h4>Neighbor Solicitation (NS)</h4>
+                    <p>Address resolution and duplicate detection</p>
+                    <code>ICMPv6 Type 135</code>
+                </div>
+                <div class="example-card">
+                    <h4>Neighbor Advertisement (NA)</h4>
+                    <p>Response to NS messages</p>
+                    <code>ICMPv6 Type 136</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Design Section -->
+        <section id="network-design" class="content-section glass">
+            <h2>🏗️ Network Design & Hardware</h2>
+
+            <h3>WAN Connectivity</h3>
+            <div class="info-box info">
+                <p>Wide Area Network (WAN) connections link geographically dispersed networks. Serial interfaces are commonly used for WAN connections to ISPs.</p>
+            </div>
+
+            <div class="code-block">
+                <code># Serial Interface Configuration for IPv6<br>
+interface Serial0/0/0<br>
+ description Connection to ISP<br>
+ ipv6 address 2001:db8:ffff::2/64<br>
+ ipv6 enable<br>
+ clock rate 128000<br>
+ no shutdown<br>
+<br>
+# Add default route through ISP<br>
+ipv6 route ::/0 Serial0/0/0 2001:db8:ffff::1</code>
+            </div>
+
+            <h3>Physical Topology Design</h3>
+            
+            <div class="grid">
+                <div class="example-card">
+                    <h4>Star Topology</h4>
+                    <p>All devices connect to central switch/router</p>
+                    <ul>
+                        <li>✅ Easy to troubleshoot</li>
+                        <li>✅ Failure isolation</li>
+                        <li>❌ Single point of failure</li>
+                    </ul>
+                </div>
+
+                <div class="example-card">
+                    <h4>Hierarchical (3-Tier)</h4>
+                    <p>Core, Distribution, Access layers</p>
+                    <ul>
+                        <li>✅ Highly scalable</li>
+                        <li>✅ Redundancy options</li>
+                        <li>✅ Best for large networks</li>
+                    </ul>
+                </div>
+
+                <div class="example-card">
+                    <h4>Mesh Topology</h4>
+                    <p>Multiple redundant paths</p>
+                    <ul>
+                        <li>✅ High redundancy</li>
+                        <li>✅ Multiple paths</li>
+                        <li>❌ Complex and expensive</li>
+                    </ul>
+                </div>
+
+                <div class="example-card">
+                    <h4>Hub-and-Spoke</h4>
+                    <p>Central hub with branch connections</p>
+                    <ul>
+                        <li>✅ Cost-effective for WAN</li>
+                        <li>✅ Centralized management</li>
+                        <li>❌ Hub is bottleneck</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Network Segmentation</h3>
+            <div class="info-box success">
+                <p>Proper network segmentation improves security, performance, and management. In IPv6, you typically have abundant address space to implement logical segmentation.</p>
+            </div>
+
+            <div class="example-card">
+                <h4>Sample Enterprise IPv6 Addressing Plan</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>IPv6 Prefix</th>
+                            <th>Hosts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Management</td>
+                            <td>2001:db8:a:10::/64</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Sales</td>
+                            <td>2001:db8:a:20::/64</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>IT Department</td>
+                            <td>2001:db8:a:30::/64</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Guest WiFi</td>
+                            <td>2001:db8:a:40::/64</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Servers</td>
+                            <td>2001:db8:a:50::/64</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>P2P Links</td>
+                            <td>2001:db8:a:fff0::/64</td>
+                            <td>/127 subnets</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Basic Device Security</h3>
+
+            <div class="code-block">
+                <code># Basic Cisco Router Security Configuration<br>
+<br>
+# Set hostname<br>
+hostname Router-HQ<br>
+<br>
+# Secure privileged EXEC mode<br>
+enable secret Str0ngP@ssw0rd<br>
+<br>
+# Secure console access<br>
+line console 0<br>
+ password C0ns0leP@ss<br>
+ login<br>
+ logging synchronous<br>
+ exec-timeout 5 0<br>
+<br>
+# Secure VTY (Telnet/SSH) access<br>
+line vty 0 4<br>
+ password VtyP@ssw0rd<br>
+ login local<br>
+ transport input ssh<br>
+ exec-timeout 10 0<br>
+<br>
+# Create local users<br>
+username admin privilege 15 secret Adm1nP@ss<br>
+<br>
+# Enable SSH<br>
+ip domain-name company.local<br>
+crypto key generate rsa modulus 2048<br>
+ip ssh version 2<br>
+<br>
+# Disable unused services<br>
+no ip http server<br>
+no ip http secure-server<br>
+no cdp run<br>
+<br>
+# Banner message<br>
+banner motd #<br>
+****************************************************<br>
+* Unauthorized access is prohibited!              *<br>
+* All activity is logged and monitored.           *<br>
+****************************************************<br>
+#<br>
+<br>
+# Save configuration<br>
+copy running-config startup-config</code>
+            </div>
+
+            <h3>IPv6 Firewall Considerations</h3>
+            <div class="info-box warning">
+                <p><strong>Important:</strong> Unlike IPv4 with NAT, IPv6 hosts are directly addressable from the Internet. Proper firewall configuration is critical!</p>
+            </div>
+
+            <div class="grid">
+                <div class="example-card">
+                    <h4>Allow Inbound</h4>
+                    <ul>
+                        <li>ICMPv6 (essential for NDP)</li>
+                        <li>Established connections</li>
+                        <li>Required services only</li>
+                    </ul>
+                </div>
+                <div class="example-card">
+                    <h4>Block Inbound</h4>
+                    <ul>
+                        <li>Unsolicited traffic</li>
+                        <li>Known malicious sources</li>
+                        <li>Unnecessary services</li>
+                    </ul>
+                </div>
+                <div class="example-card">
+                    <h4>Allow Outbound</h4>
+                    <ul>
+                        <li>User-initiated traffic</li>
+                        <li>DNS queries</li>
+                        <li>Required protocols</li>
+                    </ul>
+                </div>
+                <div class="example-card">
+                    <h4>Monitor</h4>
+                    <ul>
+                        <li>Connection attempts</li>
+                        <li>Unusual traffic patterns</li>
+                        <li>Failed authentication</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Gateway Configuration</h3>
+            <div class="info-box info">
+                <p>In IPv6, devices can learn their default gateway automatically through Router Advertisements, but static configuration is also supported.</p>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h4>Automatic (SLAAC)</h4>
+                    <div class="code-block">
+                        <code># Linux<br>
+sysctl -w net.ipv6.conf.all.autoconf=1<br>
+<br>
+# Windows (automatic by default)<br>
+netsh interface ipv6 set interface "Ethernet" routerdiscovery=enabled<br>
+<br>
+# Router sends RAs automatically<br>
+interface GigabitEthernet0/0<br>
+ ipv6 nd prefix-default 100 200</code>
+                    </div>
+                </div>
+                <div class="comparison-item">
+                    <h4>Manual Configuration</h4>
+                    <div class="code-block">
+                        <code># Linux<br>
+ip -6 addr add 2001:db8:1::100/64 dev eth0<br>
+ip -6 route add default via 2001:db8:1::1<br>
+<br>
+# Windows<br>
+netsh interface ipv6 add address "Ethernet" 2001:db8:1::100/64<br>
+netsh interface ipv6 add route ::/0 "Ethernet" 2001:db8:1::1<br>
+<br>
+# Cisco IOS<br>
+interface GigabitEthernet0/0<br>
+ ipv6 address 2001:db8:1::1/64</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools & Troubleshooting Section -->
+        <section id="tools" class="content-section glass">
+            <h2>🔧 Tools & Troubleshooting</h2>
+
+            <h3>Cisco Packet Tracer</h3>
+            <div class="info-box info">
+                <p>Cisco Packet Tracer is a network simulation tool for designing, configuring, and troubleshooting networks. Perfect for learning IPv6 without physical hardware.</p>
+            </div>
+
+            <div class="example-card">
+                <h4>Basic Packet Tracer IPv6 Lab Setup</h4>
+                <ol>
+                    <li><strong>Add Devices:</strong> Drag routers, switches, and PCs onto workspace</li>
+                    <li><strong>Connect Devices:</strong> Use cables (copper straight-through, crossover, or fiber)</li>
+                    <li><strong>Configure IPv6:</strong> Click device → CLI → Enter configuration commands</li>
+                    <li><strong>Test Connectivity:</strong> Use ping, traceroute commands</li>
+                    <li><strong>Verify:</strong> Use show commands to verify configuration</li>
+                </ol>
+            </div>
+
+            <h3>Essential IPv6 Commands</h3>
+
+            <div class="grid">
+                <div class="example-card">
+                    <h4>🖥️ Windows Commands</h4>
+                    <div class="code-block">
+                        <code># Show IPv6 configuration<br>
+ipconfig<br>
+<br>
+# Show IPv6 routing table<br>
+netsh interface ipv6 show route<br>
+<br>
+# Show neighbor cache<br>
+netsh interface ipv6 show neighbors<br>
+<br>
+# Ping IPv6 address<br>
+ping 2001:db8::1<br>
+<br>
+# Traceroute<br>
+tracert 2001:db8::1<br>
+<br>
+# Test connectivity to link-local<br>
+ping fe80::1%Ethernet</code>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h4>🐧 Linux/Unix Commands</h4>
+                    <div class="code-block">
+                        <code># Show IPv6 configuration<br>
+ip -6 addr show<br>
+<br>
+# Show IPv6 routing table<br>
+ip -6 route show<br>
+<br>
+# Show neighbor cache<br>
+ip -6 neigh show<br>
+<br>
+# Ping IPv6 address<br>
+ping6 2001:db8::1<br>
+<br>
+# Traceroute<br>
+traceroute6 2001:db8::1<br>
+<br>
+# Enable IPv6 forwarding<br>
+sysctl -w net.ipv6.conf.all.forwarding=1</code>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h4>🔧 Cisco IOS Commands</h4>
+                    <div class="code-block">
+                        <code># Show IPv6 interface brief<br>
+show ipv6 interface brief<br>
+<br>
+# Show IPv6 routing table<br>
+show ipv6 route<br>
+<br>
+# Show IPv6 neighbors<br>
+show ipv6 neighbors<br>
+<br>
+# Show IPv6 protocols<br>
+show ipv6 protocols<br>
+<br>
+# Ping IPv6 address<br>
+ping ipv6 2001:db8::1<br>
+<br>
+# Traceroute<br>
+traceroute ipv6 2001:db8::1<br>
+<br>
+# Debug IPv6 packets<br>
+debug ipv6 packet</code>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h4>🍎 macOS Commands</h4>
+                    <div class="code-block">
+                        <code># Show IPv6 configuration<br>
+ifconfig<br>
+<br>
+# Show IPv6 routing table<br>
+netstat -rn -f inet6<br>
+<br>
+# Show neighbor cache<br>
+ndp -an<br>
+<br>
+# Ping IPv6 address<br>
+ping6 2001:db8::1<br>
+<br>
+# Traceroute<br>
+traceroute6 2001:db8::1<br>
+<br>
+# Clear neighbor cache<br>
+sudo ndp -c</code>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Troubleshooting Flowchart</h3>
+            <div class="example-card">
+                <h4>Step-by-Step IPv6 Troubleshooting</h4>
+                <ol>
+                    <li>
+                        <strong>Check Physical Layer</strong>
+                        <ul>
+                            <li>Are cables connected?</li>
+                            <li>Are interface lights on?</li>
+                            <li>Check: <code>show interface status</code></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Verify IPv6 Configuration</strong>
+                        <ul>
+                            <li>Is IPv6 enabled on interface?</li>
+                            <li>Is IPv6 address configured correctly?</li>
+                            <li>Check: <code>show ipv6 interface brief</code></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Test Local Connectivity</strong>
+                        <ul>
+                            <li>Can you ping link-local addresses?</li>
+                            <li>Check: <code>ping fe80::...</code></li>
+                            <li>Verify: <code>show ipv6 neighbors</code></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Test Network Connectivity</strong>
+                        <ul>
+                            <li>Can you ping default gateway?</li>
+                            <li>Can you ping remote networks?</li>
+                            <li>Check: <code>ping 2001:db8::1</code></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Verify Routing</strong>
+                        <ul>
+                            <li>Is there a route to destination?</li>
+                            <li>Is default route configured?</li>
+                            <li>Check: <code>show ipv6 route</code></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Check Firewall/ACLs</strong>
+                        <ul>
+                            <li>Are packets being blocked?</li>
+                            <li>Is ICMPv6 allowed?</li>
+                            <li>Check: <code>show ipv6 access-list</code></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Common Issues and Solutions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Issue</th>
+                        <th>Possible Cause</th>
+                        <th>Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>No IPv6 address</td>
+                        <td>IPv6 not enabled or no RA</td>
+                        <td>Enable IPv6, check router RAs</td>
+                    </tr>
+                    <tr>
+                        <td>Can't ping gateway</td>
+                        <td>Wrong subnet or gateway down</td>
+                        <td>Verify subnet, check gateway status</td>
+                    </tr>
+                    <tr>
+                        <td>No route to host</td>
+                        <td>Missing routing entry</td>
+                        <td>Add static route or enable routing protocol</td>
+                    </tr>
+                    <tr>
+                        <td>Duplicate address</td>
+                        <td>DAD failure</td>
+                        <td>Change address or find duplicate</td>
+                    </tr>
+                    <tr>
+                        <td>Slow connectivity</td>
+                        <td>MTU issues</td>
+                        <td>Check MTU size (min 1280 for IPv6)</td>
+                    </tr>
+                    <tr>
+                        <td>Can't resolve DNS</td>
+                        <td>No DNS server configured</td>
+                        <td>Configure DNS via DHCPv6 or manual</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Interactive Ping Tool</h3>
+            <div class="tool-container">
+                <h3>IPv6 Ping Simulator</h3>
+                <div class="input-group">
+                    <label>Target IPv6 Address:</label>
+                    <input type="text" id="pingTarget" placeholder="2001:db8::1 or ::1">
+                </div>
+                <button class="btn" onclick="simulatePing()">Ping</button>
+                <div class="result-box" id="pingResult"></div>
+            </div>
+        </section>
+
+        <!-- VLSM Calculator Section -->
+        <section id="vlsm-calculator" class="content-section glass">
+            <h2>🧮 VLSM & IP Allocation Table Builder</h2>
+
+            <div class="info-box info">
+                <p>Use this tool to calculate Variable Length Subnet Masks and generate IP allocation tables for your network design.</p>
+            </div>
+
+            <h3>IPv4 VLSM Calculator</h3>
+            <div class="tool-container">
+                <div class="input-group">
+                    <label>Network Address (e.g., 10.0.0.0):</label>
+                    <input type="text" id="networkAddress" placeholder="10.0.0.0">
+                </div>
+                <div class="input-group">
+                    <label>Subnet Mask (e.g., 8 for /8):</label>
+                    <input type="number" id="subnetMask" placeholder="8" min="1" max="30">
+                </div>
+                <div id="subnetRequirements">
+                    <h4>Subnet Requirements:</h4>
+                    <div class="input-group">
+                        <label>Subnet Name:</label>
+                        <input type="text" id="subnetName1" placeholder="Sales Department">
+                        <label>Required Hosts:</label>
+                        <input type="number" id="subnetHosts1" placeholder="224" min="2">
+                    </div>
+                </div>
+                <button class="btn" onclick="addSubnetRequirement()">+ Add Subnet</button>
+                <button class="btn" onclick="calculateVLSM()">Calculate VLSM</button>
+                <div class="result-box" id="vlsmResult"></div>
+            </div>
+
+            <h3>IPv6 Allocation Table Builder</h3>
+            <div class="tool-container">
+                <div class="input-group">
+                    <label>IPv6 Prefix (e.g., 2001:db8::/32):</label>
+                    <input type="text" id="ipv6Prefix" placeholder="2001:db8::/32">
+                </div>
+                <div class="input-group">
+                    <label>Allocation Strategy:</label>
+                    <select id="ipv6Strategy">
+                        <option value="48">Allocate /48 per site</option>
+                        <option value="56">Allocate /56 per site</option>
+                        <option value="64">Allocate /64 per subnet</option>
+                    </select>
+                </div>
+                <div id="ipv6Requirements">
+                    <h4>Site/Subnet Requirements:</h4>
+                    <div class="input-group">
+                        <label>Name:</label>
+                        <input type="text" id="ipv6Name1" placeholder="HQ Building">
+                    </div>
+                </div>
+                <button class="btn" onclick="addIPv6Requirement()">+ Add Site/Subnet</button>
+                <button class="btn" onclick="generateIPv6Table()">Generate Allocation Table</button>
+                <div class="result-box" id="ipv6AllocationResult"></div>
+            </div>
+
+            <h3>Subnet Size Reference</h3>
+            <div class="grid">
+                <div class="example-card">
+                    <h4>IPv4 Subnet Sizes</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CIDR</th>
+                                <th>Hosts</th>
+                                <th>Subnet Mask</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/30</td><td>2</td><td>255.255.255.252</td></tr>
+                            <tr><td>/29</td><td>6</td><td>255.255.255.248</td></tr>
+                            <tr><td>/28</td><td>14</td><td>255.255.255.240</td></tr>
+                            <tr><td>/27</td><td>30</td><td>255.255.255.224</td></tr>
+                            <tr><td>/26</td><td>62</td><td>255.255.255.192</td></tr>
+                            <tr><td>/25</td><td>126</td><td>255.255.255.128</td></tr>
+                            <tr><td>/24</td><td>254</td><td>255.255.255.0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="example-card">
+                    <h4>IPv6 Prefix Allocations</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Prefix</th>
+                                <th>Subnets</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>/32</td><td>65,536 /48s</td><td>ISP</td></tr>
+                            <tr><td>/40</td><td>256 /48s</td><td>Large ISP customer</td></tr>
+                            <tr><td>/48</td><td>65,536 /64s</td><td>Enterprise site</td></tr>
+                            <tr><td>/56</td><td>256 /64s</td><td>Small business</td></tr>
+                            <tr><td>/60</td><td>16 /64s</td><td>Home network</td></tr>
+                            <tr><td>/64</td><td>Standard</td><td>LAN segment</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3>Sample VLSM Scenarios</h3>
+            <div class="example-card">
+                <h4>Scenario 1: Multi-Department Office</h4>
+                <p><strong>Given:</strong> 10.0.0.0/8 network</p>
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>Sales: 224 hosts</li>
+                    <li>Engineering: 120 hosts</li>
+                    <li>IT: 32 hosts</li>
+                    <li>Management: 14 hosts</li>
+                    <li>WAN Link: 2 hosts</li>
+                </ul>
+                <p><strong>Solution:</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Network</th>
+                            <th>Mask</th>
+                            <th>Usable IPs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sales</td>
+                            <td>10.0.0.0</td>
+                            <td>/24</td>
+                            <td>10.0.0.1 - 10.0.0.254</td>
+                        </tr>
+                        <tr>
+                            <td>Engineering</td>
+                            <td>10.0.1.0</td>
+                            <td>/25</td>
+                            <td>10.0.1.1 - 10.0.1.126</td>
+                        </tr>
+                        <tr>
+                            <td>IT</td>
+                            <td>10.0.2.0</td>
+                            <td>/27</td>
+                            <td>10.0.2.1 - 10.0.2.30</td>
+                        </tr>
+                        <tr>
+                            <td>Management</td>
+                            <td>10.0.2.32</td>
+                            <td>/28</td>
+                            <td>10.0.2.33 - 10.0.2.46</td>
+                        </tr>
+                        <tr>
+                            <td>WAN Link</td>
+                            <td>10.0.2.48</td>
+                            <td>/30</td>
+                            <td>10.0.2.49 - 10.0.2.50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="example-card">
+                <h4>Scenario 2: Multi-Site IPv6 Deployment</h4>
+                <p><strong>Given:</strong> 2001:db8::/32 allocation</p>
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>Headquarters: Multiple buildings with many subnets</li>
+                    <li>Branch Office A: Smaller office</li>
+                    <li>Branch Office B: Smaller office</li>
+                    <li>Data Center: Multiple VLANs</li>
+                </ul>
+                <p><strong>Solution:</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Prefix</th>
+                            <th>Available /64 Subnets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Headquarters</td>
+                            <td>2001:db8:1::/48</td>
+                            <td>65,536</td>
+                        </tr>
+                        <tr>
+                            <td>Branch Office A</td>
+                            <td>2001:db8:2::/48</td>
+                            <td>65,536</td>
+                        </tr>
+                        <tr>
+                            <td>Branch Office B</td>
+                            <td>2001:db8:3::/48</td>
+                            <td>65,536</td>
+                        </tr>
+                        <tr>
+                            <td>Data Center</td>
+                            <td>2001:db8:100::/48</td>
+                            <td>65,536</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Practical Examples Section -->
+        <section id="practical" class="content-section glass">
+            <h2>💡 Practical Examples & Activities</h2>
+
+            <h3>Activity 1: Configure Basic IPv6 on Router</h3>
+            <div class="tool-container">
+                <h4>Interactive Lab: Basic Router Configuration</h4>
+                <p>Follow these steps to configure IPv6 on a Cisco router:</p>
+                <div class="code-block">
+                    <code># Step 1: Enable IPv6 routing<br>
+Router> enable<br>
+Router# configure terminal<br>
+Router(config)# ipv6 unicast-routing<br>
+<br>
+# Step 2: Configure interface with IPv6<br>
+Router(config)# interface GigabitEthernet0/0<br>
+Router(config-if)# ipv6 address 2001:db8:1::1/64<br>
+Router(config-if)# ipv6 enable<br>
+Router(config-if)# no shutdown<br>
+Router(config-if)# exit<br>
+<br>
+# Step 3: Verify configuration<br>
+Router(config)# exit<br>
+Router# show ipv6 interface brief<br>
+Router# show ipv6 route</code>
+                </div>
+                <button class="btn" onclick="simulateRouterConfig('basic')">Simulate This Config</button>
+                <div class="result-box" id="basicConfigResult"></div>
+            </div>
+
+            <h3>Activity 2: Configure SLAAC</h3>
+            <div class="tool-container">
+                <h4>Interactive Lab: Enable SLAAC</h4>
+                <p>Configure a router to advertise IPv6 prefixes using SLAAC:</p>
+                <div class="code-block">
+                    <code># Configure interface<br>
+Router(config)# interface GigabitEthernet0/0<br>
+Router(config-if)# ipv6 address 2001:db8:1::1/64<br>
+Router(config-if)# ipv6 enable<br>
+<br>
+# Configure Router Advertisement<br>
+Router(config-if)# ipv6 nd prefix default 100 200<br>
+Router(config-if)# ipv6 nd ra lifetime 1800<br>
+Router(config-if)# no shutdown<br>
+<br>
+# Verify RA is being sent<br>
+Router# show ipv6 interface GigabitEthernet0/0</code>
+                </div>
+                <button class="btn" onclick="simulateRouterConfig('slaac')">Simulate SLAAC</button>
+                <div class="result-box" id="slaacResult"></div>
+            </div>
+
+            <h3>Activity 3: Configure Static Routing</h3>
+            <div class="tool-container">
+                <h4>Interactive Lab: IPv6 Static Routes</h4>
+                <div class="input-group">
+                    <label>Destination Network:</label>
+                    <input type="text" id="destNetwork" placeholder="2001:db8:2::/64">
+                </div>
+                <div class="input-group">
+                    <label>Next-Hop Address:</label>
+                    <input type="text" id="nextHop" placeholder="2001:db8:1::2">
+                </div>
+                <button class="btn" onclick="generateStaticRoute()">Generate Static Route Command</button>
+                <div class="result-box" id="staticRouteResult"></div>
+            </div>
+
+            <h3>Activity 4: Subnet Calculator</h3>
+            <div class="tool-container">
+                <h4>IPv6 Subnet Information</h4>
+                <div class="input-group">
+                    <label>IPv6 Address with Prefix:</label>
+                    <input type="text" id="ipv6Subnet" placeholder="2001:db8:abcd:1234::1/64">
+                </div>
+                <button class="btn" onclick="calculateSubnetInfo()">Calculate Subnet Info</button>
+                <div class="result-box" id="subnetInfoResult"></div>
+            </div>
+
+            <h3>Activity 5: Address Type Identifier</h3>
+            <div class="tool-container">
+                <h4>Identify IPv6 Address Type</h4>
+                <div class="input-group">
+                    <label>IPv6 Address:</label>
+                    <input type="text" id="addressType" placeholder="fe80::1 or 2001:db8::1">
+                </div>
+                <button class="btn" onclick="identifyAddressType()">Identify Type</button>
+                <div class="result-box" id="addressTypeResult"></div>
+            </div>
+
+            <h3>Real-World Scenarios</h3>
+            
+            <div class="example-card">
+                <h4>Scenario: Small Business Network Migration</h4>
+                <p><strong>Situation:</strong> A small business with 50 employees needs to migrate from IPv4 to IPv6 while maintaining IPv4 connectivity.</p>
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>IPv6 prefix: 2001:db8:1000::/48</li>
+                    <li>3 VLANs: Office (30 hosts), Servers (10 hosts), Guest (20 hosts)</li>
+                    <li>Maintain IPv4 connectivity during transition</li>
+                    <li>Secure guest network</li>
+                </ul>
+                <p><strong>Solution:</strong></p>
+                <ol>
+                    <li><strong>Implement Dual-Stack:</strong> Run IPv4 and IPv6 simultaneously</li>
+                    <li><strong>Allocate IPv6 Subnets:</strong>
+                        <ul>
+                            <li>Office: 2001:db8:1000:10::/64</li>
+                            <li>Servers: 2001:db8:1000:20::/64</li>
+                            <li>Guest: 2001:db8:1000:30::/64</li>
+                        </ul>
+                    </li>
+                    <li><strong>Configure SLAAC with Privacy Extensions</strong> for office network</li>
+                    <li><strong>Use DHCPv6</strong> for servers (static addressing)</li>
+                    <li><strong>Implement IPv6 firewall rules</strong> to isolate guest network</li>
+                </ol>
+                <div class="code-block">
+                    <code># Router Configuration<br>
+ipv6 unicast-routing<br>
+<br>
+interface GigabitEthernet0/0.10<br>
+ encapsulation dot1Q 10<br>
+ ip address 192.168.10.1 255.255.255.0<br>
+ ipv6 address 2001:db8:1000:10::1/64<br>
+ ipv6 enable<br>
+<br>
+interface GigabitEthernet0/0.20<br>
+ encapsulation dot1Q 20<br>
+ ip address 192.168.20.1 255.255.255.0<br>
+ ipv6 address 2001:db8:1000:20::1/64<br>
+ ipv6 enable<br>
+<br>
+interface GigabitEthernet0/0.30<br>
+ encapsulation dot1Q 30<br>
+ ip address 192.168.30.1 255.255.255.0<br>
+ ipv6 address 2001:db8:1000:30::1/64<br>
+ ipv6 enable<br>
+ ipv6 traffic-filter GUEST-IN in</code>
+                </div>
+            </div>
+
+            <div class="example-card">
+                <h4>Scenario: Multi-Site Enterprise with WAN</h4>
+                <p><strong>Situation:</strong> Enterprise with HQ and 2 branch offices connected via WAN links.</p>
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>HQ: 200 users, multiple VLANs</li>
+                    <li>Branch A: 50 users</li>
+                    <li>Branch B: 30 users</li>
+                    <li>Dynamic routing between sites</li>
+                    <li>Redundant internet connection at HQ</li>
+                </ul>
+                <p><strong>IPv6 Addressing Plan:</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Prefix</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HQ</td>
+                            <td>2001:db8::/48</td>
+                            <td>Main site allocation</td>
+                        </tr>
+                        <tr>
+                            <td>HQ VLAN 10</td>
+                            <td>2001:db8:0:10::/64</td>
+                            <td>Management</td>
+                        </tr>
+                        <tr>
+                            <td>HQ VLAN 20</td>
+                            <td>2001:db8:0:20::/64</td>
+                            <td>Users</td>
+                        </tr>
+                        <tr>
+                            <td>HQ VLAN 30</td>
+                            <td>2001:db8:0:30::/64</td>
+                            <td>Servers</td>
+                        </tr>
+                        <tr>
+                            <td>Branch A</td>
+                            <td>2001:db8:1::/48</td>
+                            <td>Branch A allocation</td>
+                        </tr>
+                        <tr>
+                            <td>Branch B</td>
+                            <td>2001:db8:2::/48</td>
+                            <td>Branch B allocation</td>
+                        </tr>
+                        <tr>
+                            <td>WAN Links</td>
+                            <td>2001:db8:ff::/48</td>
+                            <td>Point-to-point links (/127)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Routing Configuration (OSPFv3):</strong></p>
+                <div class="code-block">
+                    <code># HQ Router<br>
+ipv6 router ospf 1<br>
+ router-id 1.1.1.1<br>
+<br>
+interface range GigabitEthernet0/0 - 2<br>
+ ipv6 ospf 1 area 0<br>
+<br>
+# Branch A Router<br>
+ipv6 router ospf 1<br>
+ router-id 2.2.2.2<br>
+<br>
+interface GigabitEthernet0/0<br>
+ ipv6 ospf 1 area 0<br>
+<br>
+# Branch B Router<br>
+ipv6 router ospf 1<br>
+ router-id 3.3.3.3<br>
+<br>
+interface GigabitEthernet0/0<br>
+ ipv6 ospf 1 area 0</code>
+                </div>
+            </div>
+
+            <h3>Hands-On Practice Exercises</h3>
+            <div class="grid">
+                <div class="example-card">
+                    <h4>Exercise 1: Basic Connectivity</h4>
+                    <p><strong>Task:</strong> Connect 2 routers with IPv6</p>
+                    <ol>
+                        <li>Configure IPv6 addresses on both routers</li>
+                        <li>Verify link-local addresses</li>
+                        <li>Ping between routers</li>
+                        <li>View neighbor table</li>
+                    </ol>
+                    <p><strong>Skills:</strong> Interface configuration, basic connectivity</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>Exercise 2: Static Routing</h4>
+                    <p><strong>Task:</strong> Configure static routes between 3 networks</p>
+                    <ol>
+                        <li>Design network topology</li>
+                        <li>Assign IPv6 addresses</li>
+                        <li>Configure static routes</li>
+                        <li>Test end-to-end connectivity</li>
+                    </ol>
+                    <p><strong>Skills:</strong> Routing, troubleshooting</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>Exercise 3: Dynamic Routing</h4>
+                    <p><strong>Task:</strong> Implement OSPFv3 in multi-router network</p>
+                    <ol>
+                        <li>Create 4-router topology</li>
+                        <li>Configure OSPFv3</li>
+                        <li>Verify neighbor adjacencies</li>
+                        <li>Test failover scenarios</li>
+                    </ol>
+                    <p><strong>Skills:</strong> Dynamic routing, convergence</p>
+                </div>
+
+                <div class="example-card">
+                    <h4>Exercise 4: Access Control</h4>
+                    <p><strong>Task:</strong> Implement IPv6 ACLs</p>
+                    <ol>
+                        <li>Create network with servers and clients</li>
+                        <li>Configure IPv6 ACLs</li>
+                        <li>Test access restrictions</li>
+                        <li>Allow specific ICMPv6 types</li>
+                    </ol>
+                    <p><strong>Skills:</strong> Security, access control</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="glass">
+            <h3>📚 Additional Resources</h3>
+            <p>
+                <a href="https://tools.ietf.org/html/rfc4291" target="_blank" style="color: white;">RFC 4291 - IPv6 Addressing Architecture</a> |
+                <a href="https://tools.ietf.org/html/rfc4862" target="_blank" style="color: white;">RFC 4862 - IPv6 SLAAC</a> |
+                <a href="https://tools.ietf.org/html/rfc4861" target="_blank" style="color: white;">RFC 4861 - Neighbor Discovery</a>
+            </p>
+            <p style="margin-top: 20px; opacity: 0.7;">
+                © 2026 IPv6 Educational Cheatsheet | Created for Learning IPv6 from Beginner to Professional
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Global Variables
+        let subnetCounter = 1;
+        let ipv6Counter = 1;
+
+        // Tab Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Search Functionality
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            const sections = document.querySelectorAll('.content-section');
+            let found = false;
+            let results = [];
+
+            sections.forEach(section => {
+                const content = section.textContent.toLowerCase();
+                if (content.includes(searchTerm)) {
+                    found = true;
+                    results.push(section.id);
+                }
+            });
+
+            if (found && results.length > 0) {
+                // Show first matching section
+                showSectionById(results[0]);
+                
+                // Highlight search term (simple implementation)
+                alert(`Found "${searchTerm}" in ${results.length} section(s). Showing first match.`);
+            } else {
+                alert(`No results found for "${searchTerm}"`);
+            }
+        }
+
+        function showSectionById(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Find and activate corresponding tab
+            tabs.forEach(tab => {
+                if (tab.onclick && tab.onclick.toString().includes(sectionId)) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        // IPv6 Address Compressor
+        function compressIPv6() {
+            const input = document.getElementById('ipv6Full').value.trim();
+            const result = document.getElementById('compressResult');
+            
+            if (!input) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter an IPv6 address</span>';
+                return;
+            }
+
+            try {
+                // Basic compression algorithm
+                let compressed = input.toLowerCase();
+                
+                // Remove leading zeros from each block
+                compressed = compressed.split(':').map(block => {
+                    return block.replace(/^0+/, '') || '0';
+                }).join(':');
+                
+                // Find longest sequence of zeros
+                let maxZeroSeq = '';
+                let maxZeroSeqLength = 0;
+                let currentZeroSeq = '';
+                
+                const blocks = compressed.split(':');
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i] === '0') {
+                        currentZeroSeq += ':0';
+                        if (currentZeroSeq.length > maxZeroSeqLength) {
+                            maxZeroSeq = currentZeroSeq;
+                            maxZeroSeqLength = currentZeroSeq.length;
+                        }
+                    } else {
+                        currentZeroSeq = '';
+                    }
+                }
+                
+                // Replace longest sequence with ::
+                if (maxZeroSeq) {
+                    compressed = compressed.replace(maxZeroSeq.substring(1), ':');
+                    compressed = compressed.replace(/:{3,}/, '::');
+                }
+                
+                result.innerHTML = `
+                    <strong style="color: #48bb78;">Compressed IPv6 Address:</strong><br>
+                    <code style="font-size: 1.2em; color: #a8e6cf;">${compressed}</code><br><br>
+                    <strong>Original:</strong> <code>${input}</code>
+                `;
+            } catch (error) {
+                result.innerHTML = '<span style="color: #f56565;">Invalid IPv6 address format</span>';
+            }
+        }
+
+        // VLSM Calculator
+        let vlsmSubnets = [];
+
+        function addSubnetRequirement() {
+            subnetCounter++;
+            const container = document.getElementById('subnetRequirements');
+            const newReq = document.createElement('div');
+            newReq.className = 'input-group';
+            newReq.innerHTML = `
+                <label>Subnet Name:</label>
+                <input type="text" id="subnetName${subnetCounter}" placeholder="Department ${subnetCounter}">
+                <label>Required Hosts:</label>
+                <input type="number" id="subnetHosts${subnetCounter}" placeholder="50" min="2">
+            `;
+            container.appendChild(newReq);
+        }
+
+        function calculateVLSM() {
+            const networkAddr = document.getElementById('networkAddress').value;
+            const mask = parseInt(document.getElementById('subnetMask').value);
+            const result = document.getElementById('vlsmResult');
+            
+            if (!networkAddr || !mask) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter network address and mask</span>';
+                return;
+            }
+
+            // Collect all subnet requirements
+            let subnets = [];
+            for (let i = 1; i <= subnetCounter; i++) {
+                const name = document.getElementById(`subnetName${i}`)?.value;
+                const hosts = parseInt(document.getElementById(`subnetHosts${i}`)?.value);
+                if (name && hosts) {
+                    subnets.push({ name, hosts, cidr: calculateRequiredCIDR(hosts) });
+                }
+            }
+
+            // Sort by hosts (descending)
+            subnets.sort((a, b) => b.hosts - a.hosts);
+
+            // Generate allocation table
+            let html = '<h4 style="color: #48bb78;">VLSM Allocation Table</h4>';
+            html += '<table style="width: 100%;"><thead><tr>';
+            html += '<th>Subnet Name</th><th>Required Hosts</th><th>CIDR</th><th>Subnet Mask</th><th>Usable IPs</th>';
+            html += '</tr></thead><tbody>';
+
+            let currentOctet = parseInt(networkAddr.split('.')[3]);
+            const baseOctets = networkAddr.split('.').slice(0, 3).join('.');
+
+            subnets.forEach((subnet, index) => {
+                const subnetMask = cidrToMask(subnet.cidr);
+                const blockSize = Math.pow(2, 32 - subnet.cidr);
+                const usableHosts = blockSize - 2;
+                const subnetAddr = `${baseOctets}.${currentOctet}`;
+                const firstUsable = `${baseOctets}.${currentOctet + 1}`;
+                const lastUsable = `${baseOctets}.${currentOctet + blockSize - 2}`;
+                
+                html += `<tr>
+                    <td><strong>${subnet.name}</strong></td>
+                    <td>${subnet.hosts}</td>
+                    <td>/${subnet.cidr}</td>
+                    <td>${subnetMask}</td>
+                    <td>${firstUsable} - ${lastUsable}</td>
+                </tr>`;
+                
+                currentOctet += blockSize;
+            });
+
+            html += '</tbody></table>';
+            result.innerHTML = html;
+        }
+
+        function calculateRequiredCIDR(hosts) {
+            // Calculate required CIDR for given number of hosts
+            let cidr = 32;
+            let size = 2;
+            while (size - 2 < hosts) {
+                cidr--;
+                size *= 2;
+            }
+            return cidr;
+        }
+
+        function cidrToMask(cidr) {
+            const masks = {
+                30: '255.255.255.252', 29: '255.255.255.248', 28: '255.255.255.240',
+                27: '255.255.255.224', 26: '255.255.255.192', 25: '255.255.255.128',
+                24: '255.255.255.0', 16: '255.255.0.0', 8: '255.0.0.0'
+            };
+            return masks[cidr] || 'Calculated';
+        }
+
+        // IPv6 Allocation Table
+        function addIPv6Requirement() {
+            ipv6Counter++;
+            const container = document.getElementById('ipv6Requirements');
+            const newReq = document.createElement('div');
+            newReq.className = 'input-group';
+            newReq.innerHTML = `
+                <label>Name:</label>
+                <input type="text" id="ipv6Name${ipv6Counter}" placeholder="Site ${ipv6Counter}">
+            `;
+            container.appendChild(newReq);
+        }
+
+        function generateIPv6Table() {
+            const prefix = document.getElementById('ipv6Prefix').value;
+            const strategy = document.getElementById('ipv6Strategy').value;
+            const result = document.getElementById('ipv6AllocationResult');
+            
+            if (!prefix) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter IPv6 prefix</span>';
+                return;
+            }
+
+            // Collect all sites/subnets
+            let sites = [];
+            for (let i = 1; i <= ipv6Counter; i++) {
+                const name = document.getElementById(`ipv6Name${i}`)?.value;
+                if (name) {
+                    sites.push(name);
+                }
+            }
+
+            // Generate allocation
+            const basePrefix = prefix.split('::')[0].replace(/\/$/, '').replace(/\/\d+$/, '');
+            let html = '<h4 style="color: #48bb78;">IPv6 Allocation Table</h4>';
+            html += '<table style="width: 100%;"><thead><tr>';
+            html += '<th>Site/Subnet Name</th><th>IPv6 Prefix</th><th>Available /64 Subnets</th>';
+            html += '</tr></thead><tbody>';
+
+            sites.forEach((site, index) => {
+                let sitePrefix, available;
+                if (strategy === '48') {
+                    sitePrefix = `${basePrefix}:${(index + 1).toString(16)}::/48`;
+                    available = '65,536';
+                } else if (strategy === '56') {
+                    sitePrefix = `${basePrefix}:${(index + 1).toString(16)}00::/56`;
+                    available = '256';
+                } else {
+                    sitePrefix = `${basePrefix}:${(index + 1).toString(16)}::/64`;
+                    available = '1 (Standard LAN)';
+                }
+                
+                html += `<tr>
+                    <td><strong>${site}</strong></td>
+                    <td><code>${sitePrefix}</code></td>
+                    <td>${available}</td>
+                </tr>`;
+            });
+
+            html += '</tbody></table>';
+            result.innerHTML = html;
+        }
+
+        // Ping Simulator
+        function simulatePing() {
+            const target = document.getElementById('pingTarget').value;
+            const result = document.getElementById('pingResult');
+            
+            if (!target) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter target address</span>';
+                return;
+            }
+
+            // Simulate ping output
+            result.innerHTML = `
+                <strong style="color: #48bb78;">Pinging ${target}:</strong><br><br>
+                <code>
+                Pinging ${target} with 32 bytes of data:<br>
+                Reply from ${target}: time<1ms<br>
+                Reply from ${target}: time<1ms<br>
+                Reply from ${target}: time<1ms<br>
+                Reply from ${target}: time<1ms<br>
+                <br>
+                Ping statistics for ${target}:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)<br>
+                Approximate round trip times in milli-seconds:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Minimum = 0ms, Maximum = 1ms, Average = 0ms
+                </code>
+            `;
+        }
+
+        // Router Configuration Simulator
+        function simulateRouterConfig(type) {
+            const result = document.getElementById(type === 'basic' ? 'basicConfigResult' : 'slaacResult');
+            
+            if (type === 'basic') {
+                result.innerHTML = `
+                    <strong style="color: #48bb78;">Configuration Applied Successfully!</strong><br><br>
+                    <code>
+                    Router# show ipv6 interface brief<br>
+                    GigabitEthernet0/0     [up/up]<br>
+                    &nbsp;&nbsp;FE80::1<br>
+                    &nbsp;&nbsp;2001:DB8:1::1<br>
+                    <br>
+                    Router# show ipv6 route<br>
+                    IPv6 Routing Table - default - 3 entries<br>
+                    C   2001:DB8:1::/64 [0/0]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;via GigabitEthernet0/0, directly connected<br>
+                    L   2001:DB8:1::1/128 [0/0]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;via GigabitEthernet0/0, receive<br>
+                    L   FF00::/8 [0/0]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;via Null0, receive
+                    </code>
+                `;
+            } else {
+                result.innerHTML = `
+                    <strong style="color: #48bb78;">SLAAC Configured Successfully!</strong><br><br>
+                    <code>
+                    Router# show ipv6 interface GigabitEthernet0/0<br>
+                    GigabitEthernet0/0 is up, line protocol is up<br>
+                    &nbsp;&nbsp;IPv6 is enabled, link-local address is FE80::1<br>
+                    &nbsp;&nbsp;Global unicast address(es):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;2001:DB8:1::1, subnet is 2001:DB8:1::/64<br>
+                    &nbsp;&nbsp;ND DAD is enabled, number of DAD attempts: 1<br>
+                    &nbsp;&nbsp;ND reachable time is 30000 milliseconds<br>
+                    &nbsp;&nbsp;ND advertised reachable time is 0 milliseconds<br>
+                    &nbsp;&nbsp;ND advertised retransmit interval is 0 milliseconds<br>
+                    &nbsp;&nbsp;ND router advertisements are sent every 200 seconds<br>
+                    &nbsp;&nbsp;ND router advertisements live for 1800 seconds<br>
+                    &nbsp;&nbsp;Hosts use SLAAC for addresses
+                    </code>
+                `;
+            }
+        }
+
+        // Static Route Generator
+        function generateStaticRoute() {
+            const dest = document.getElementById('destNetwork').value;
+            const nextHop = document.getElementById('nextHop').value;
+            const result = document.getElementById('staticRouteResult');
+            
+            if (!dest || !nextHop) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter both destination and next-hop</span>';
+                return;
+            }
+
+            result.innerHTML = `
+                <strong style="color: #48bb78;">Generated Static Route Command:</strong><br><br>
+                <code style="font-size: 1.1em;">
+                # Cisco IOS Command:<br>
+                ipv6 route ${dest} ${nextHop}<br>
+                <br>
+                # Linux Command:<br>
+                ip -6 route add ${dest} via ${nextHop}<br>
+                <br>
+                # Windows Command:<br>
+                netsh interface ipv6 add route ${dest} "Ethernet" ${nextHop}
+                </code>
+            `;
+        }
+
+        // Subnet Info Calculator
+        function calculateSubnetInfo() {
+            const input = document.getElementById('ipv6Subnet').value;
+            const result = document.getElementById('subnetInfoResult');
+            
+            if (!input) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter IPv6 address with prefix</span>';
+                return;
+            }
+
+            const [address, prefix] = input.split('/');
+            const prefixNum = parseInt(prefix) || 64;
+            
+            result.innerHTML = `
+                <strong style="color: #48bb78;">Subnet Information:</strong><br><br>
+                <table style="width: 100%;">
+                    <tr><td><strong>Full Address:</strong></td><td><code>${input}</code></td></tr>
+                    <tr><td><strong>Prefix Length:</strong></td><td>/${prefixNum}</td></tr>
+                    <tr><td><strong>Network Bits:</strong></td><td>${prefixNum} bits</td></tr>
+                    <tr><td><strong>Host Bits:</strong></td><td>${128 - prefixNum} bits</td></tr>
+                    <tr><td><strong>Total Addresses:</strong></td><td>2^${128 - prefixNum} (${Math.pow(2, Math.min(128 - prefixNum, 30)).toLocaleString()}${(128 - prefixNum) > 30 ? '+' : ''})</td></tr>
+                    <tr><td><strong>Address Type:</strong></td><td>${getAddressType(address)}</td></tr>
+                </table>
+            `;
+        }
+
+        // Address Type Identifier
+        function identifyAddressType() {
+            const address = document.getElementById('addressType').value.toLowerCase();
+            const result = document.getElementById('addressTypeResult');
+            
+            if (!address) {
+                result.innerHTML = '<span style="color: #f56565;">Please enter IPv6 address</span>';
+                return;
+            }
+
+            const type = getAddressType(address);
+            const info = getAddressTypeInfo(address);
+            
+            result.innerHTML = `
+                <strong style="color: #48bb78;">Address Type: ${type}</strong><br><br>
+                ${info}
+            `;
+        }
+
+        function getAddressType(address) {
+            address = address.toLowerCase();
+            
+            if (address === '::1' || address === '0000:0000:0000:0000:0000:0000:0000:0001') {
+                return 'Loopback';
+            } else if (address.startsWith('fe80:')) {
+                return 'Link-Local Unicast';
+            } else if (address.startsWith('ff')) {
+                return 'Multicast';
+            } else if (address.startsWith('fc') || address.startsWith('fd')) {
+                return 'Unique Local Address (ULA)';
+            } else if (address.startsWith('2001:db8:')) {
+                return 'Documentation';
+            } else if (address.match(/^2[0-3]/)) {
+                return 'Global Unicast';
+            } else if (address === '::') {
+                return 'Unspecified';
+            }
+            return 'Unknown/Special';
+        }
+
+        function getAddressTypeInfo(address) {
+            const type = getAddressType(address);
+            const info = {
+                'Loopback': '🔁 Used for local host communication. Equivalent to 127.0.0.1 in IPv4.',
+                'Link-Local Unicast': '🔗 Automatically configured on all IPv6 interfaces. Not routable beyond local link.',
+                'Multicast': '📡 One-to-many communication. Replaces broadcast in IPv4.',
+                'Unique Local Address (ULA)': '🏠 Private IPv6 address. Routable within organization but not on Internet.',
+                'Documentation': '📚 Reserved for documentation and examples. Should never appear in production.',
+                'Global Unicast': '🌍 Globally routable address. Equivalent to public IPv4 addresses.',
+                'Unspecified': '❓ Indicates absence of address. Used before address is assigned.'
+            };
+            return info[type] || 'No additional information available.';
+        }
+
+        // Download Markdown Function
+        function downloadMarkdown() {
+            let markdown = '# IPv6 Complete Cheatsheet\n\n';
+            markdown += 'Your Complete Educational Guide from Beginner to Professional\n\n';
+            markdown += '---\n\n';
+            
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                const heading = section.querySelector('h2');
+                if (heading) {
+                    markdown += `## ${heading.textContent}\n\n`;
+                }
+                
+                // Extract text content (simplified)
+                const paragraphs = section.querySelectorAll('p, li, code, td, th');
+                paragraphs.forEach(p => {
+                    if (p.textContent.trim()) {
+                        markdown += p.textContent.trim() + '\n';
+                    }
+                });
+                markdown += '\n---\n\n';
+            });
+            
+            // Create blob and download
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ipv6-cheatsheet.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('📥 Downloading IPv6 Cheatsheet as Markdown!');
+        }
+
+        // Enter key support for search
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
