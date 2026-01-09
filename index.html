@@ -22,6 +22,77 @@
             --glass-border: rgba(255, 255, 255, 0.9);
             --shadow-light: rgba(0, 0, 0, 0.1);
             --shadow-medium: rgba(0, 0, 0, 0.15);
+            --code-bg: rgba(45, 55, 72, 0.95);
+            --code-text: #68d391;
+        }
+
+        /* Dark Theme (Default) */
+        [data-theme="dark"] {
+            --primary-color: #4299e1;
+            --secondary-color: #3182ce;
+            --accent-color: #63b3ed;
+            --text-color: #e2e8f0;
+            --light-text: #cbd5e0;
+            --bg-color: #1a202c;
+            --glass-bg: rgba(45, 55, 72, 0.7);
+            --glass-border: rgba(74, 85, 104, 0.9);
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            --shadow-medium: rgba(0, 0, 0, 0.5);
+            --code-bg: rgba(26, 32, 44, 0.95);
+            --code-text: #68d391;
+            --input-bg: rgba(45, 55, 72, 0.95);
+            --table-bg: rgba(45, 55, 72, 0.5);
+            --table-header-bg: rgba(74, 85, 104, 0.3);
+            --table-border: rgba(74, 85, 104, 0.6);
+            --info-box-bg: rgba(45, 55, 72, 0.6);
+            --card-bg: rgba(45, 55, 72, 0.6);
+            --result-bg: rgba(45, 55, 72, 0.8);
+        }
+
+        /* Light Theme */
+        [data-theme="light"] {
+            --primary-color: #4a5568;
+            --secondary-color: #2d3748;
+            --accent-color: #718096;
+            --text-color: #2d3748;
+            --light-text: #4a5568;
+            --bg-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --code-bg: rgba(45, 55, 72, 0.95);
+            --code-text: #68d391;
+            --input-bg: rgba(255, 255, 255, 0.95);
+            --table-bg: rgba(255, 255, 255, 0.5);
+            --table-header-bg: rgba(74, 85, 104, 0.1);
+            --table-border: rgba(226, 232, 240, 0.6);
+            --info-box-bg: rgba(255, 255, 255, 0.6);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --result-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Blue Theme */
+        [data-theme="blue"] {
+            --primary-color: #3b82f6;
+            --secondary-color: #2563eb;
+            --accent-color: #60a5fa;
+            --text-color: #1e3a8a;
+            --light-text: #3b82f6;
+            --bg-color: #dbeafe;
+            --glass-bg: rgba(219, 234, 254, 0.7);
+            --glass-border: rgba(147, 197, 253, 0.9);
+            --shadow-light: rgba(59, 130, 246, 0.1);
+            --shadow-medium: rgba(59, 130, 246, 0.15);
+            --code-bg: rgba(30, 58, 138, 0.95);
+            --code-text: #60a5fa;
+            --input-bg: rgba(255, 255, 255, 0.95);
+            --table-bg: rgba(239, 246, 255, 0.5);
+            --table-header-bg: rgba(59, 130, 246, 0.1);
+            --table-border: rgba(147, 197, 253, 0.6);
+            --info-box-bg: rgba(239, 246, 255, 0.6);
+            --card-bg: rgba(239, 246, 255, 0.6);
+            --result-bg: rgba(239, 246, 255, 0.8);
         }
 
         body {
@@ -41,11 +112,26 @@
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="dark"] body::before {
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(66, 153, 225, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(66, 153, 225, 0.15) 0%, transparent 50%);
+        }
+
+        [data-theme="light"] body::before {
             background: 
                 radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.3) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
+        }
+
+        [data-theme="blue"] body::before {
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(96, 165, 250, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(96, 165, 250, 0.2) 0%, transparent 50%);
         }
 
         .container {
@@ -165,7 +251,7 @@
         }
 
         .tab-btn.active {
-            background: white;
+            background: var(--glass-bg);
             color: var(--primary-color);
             box-shadow: 0 4px 16px var(--shadow-medium);
         }
@@ -217,7 +303,7 @@
 
         /* Info Boxes */
         .info-box {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--info-box-bg, rgba(255, 255, 255, 0.6));
             padding: 20px;
             border-radius: 12px;
             margin: 20px 0;
@@ -243,17 +329,17 @@
 
         /* Code Blocks */
         .code-block {
-            background: rgba(45, 55, 72, 0.95);
+            background: var(--code-bg);
             padding: 20px;
             border-radius: 12px;
             margin: 15px 0;
             font-family: 'Courier New', monospace;
-            color: #a8e6cf;
+            color: var(--code-text);
             overflow-x: auto;
         }
 
         .code-block code {
-            color: #68d391;
+            color: var(--code-text);
         }
 
         /* Tables */
@@ -261,14 +347,14 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--table-bg, rgba(255, 255, 255, 0.5));
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         th {
-            background: rgba(74, 85, 104, 0.1);
+            background: var(--table-header-bg, rgba(74, 85, 104, 0.1));
             padding: 15px;
             text-align: left;
             color: var(--text-color);
@@ -277,7 +363,7 @@
 
         td {
             padding: 12px 15px;
-            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            border-top: 1px solid var(--table-border, rgba(226, 232, 240, 0.6));
             color: var(--light-text);
         }
 
@@ -287,7 +373,8 @@
 
         /* Interactive Tools */
         .tool-container {
-            background: rgba(255, 255, 255, 0.5);
+        .tool-container {
+            background: var(--card-bg, rgba(255, 255, 255, 0.5));
             padding: 25px;
             border-radius: 12px;
             margin: 25px 0;
@@ -313,15 +400,15 @@
         .input-group select {
             width: 100%;
             padding: 12px;
-            border: 1px solid rgba(226, 232, 240, 0.6);
+            border: 1px solid var(--table-border, rgba(226, 232, 240, 0.6));
             border-radius: 8px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--input-bg, rgba(255, 255, 255, 0.95));
             font-size: 16px;
             color: var(--text-color);
         }
 
         .result-box {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--result-bg, rgba(255, 255, 255, 0.8));
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
@@ -332,11 +419,11 @@
 
         /* Example Cards */
         .example-card {
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--card-bg, rgba(255, 255, 255, 0.6));
             padding: 20px;
             border-radius: 12px;
             margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--glass-border);
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 2px 8px var(--shadow-light);
         }
@@ -447,9 +534,86 @@
         .hidden {
             display: none !important;
         }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 16px var(--shadow-medium);
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: transparent;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn.active {
+            background: var(--primary-color);
+            box-shadow: 0 2px 8px var(--shadow-medium);
+        }
+
+        .theme-btn[data-theme="dark"] {
+            background: #1a202c;
+            color: #4299e1;
+        }
+
+        .theme-btn[data-theme="light"] {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .theme-btn[data-theme="blue"] {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+
+        .theme-btn.active[data-theme="dark"] {
+            background: #2d3748;
+            box-shadow: 0 0 0 2px #4299e1;
+        }
+
+        .theme-btn.active[data-theme="light"] {
+            background: #ffffff;
+            box-shadow: 0 0 0 2px #4a5568;
+        }
+
+        .theme-btn.active[data-theme="blue"] {
+            background: #eff6ff;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
     </style>
 </head>
-<body>
+<body data-theme="dark">
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-btn active" data-theme="dark" onclick="setTheme('dark')" title="Dark Theme">🌙</button>
+        <button class="theme-btn" data-theme="light" onclick="setTheme('light')" title="Light Theme">☀️</button>
+        <button class="theme-btn" data-theme="blue" onclick="setTheme('blue')" title="Blue Theme">🌊</button>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <header class="glass">
@@ -1939,6 +2103,31 @@ interface GigabitEthernet0/0<br>
     </div>
 
     <script>
+        // Theme Management
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            
+            // Update active button
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            themeBtns.forEach(btn => {
+                if (btn.getAttribute('data-theme') === theme) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Load saved theme or default to dark
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+        }
+
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
+
         // Global Variables
         let subnetCounter = 1;
         let ipv6Counter = 1;
